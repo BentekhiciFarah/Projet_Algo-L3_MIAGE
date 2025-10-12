@@ -306,8 +306,36 @@ int* P_random (int n)
 
 /*************************************************/
 
-int SyracuseI (int n)
-{ return 0 ; }
+/***************************/
+int procedure_Syracuse_pair(int n) {
+    if (n==1)
+      return CSyr ;
+    if (n%2==0)
+      return procedure_Syracuse_pair(n/2) ;
+}
+int procedure_Syracuse_impair(int n) {
+  if (n==1)
+    return CSyr ;
+  if (n%2==0)
+    return procedure_Syracuse_pair(3*n+1) ;
+}
+
+int SyracuseI (int n) {
+  if (n==0)
+    return CSyr ;
+  while (n!=1) {
+    if (n%2==0) {
+      n=n/2 ;
+      printf("%d\n",n) ;
+    }
+    else {
+      n= n*3 +1 ;
+      printf("%d\n",n) ;
+    }
+  }
+  return n ;
+
+}
 
 /*************************************************/
 
@@ -316,8 +344,13 @@ int SyracuseSF (int n)
 
 /*************************************************/
 
-int SyracuseSP (int n)
-{ return 0 ; }
+int SyracuseSP (int n) {
+  if (n==0)
+    return CSyr ;
+  if (n%2==0)
+    return procedure_Syracuse_pair(n);
+  return procedure_Syracuse_impair(n);
+}
 
 /*************************************************/
 
