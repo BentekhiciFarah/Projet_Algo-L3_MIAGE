@@ -307,6 +307,7 @@ int* P_random (int n)
 /*************************************************/
 
 /***************************/
+/*****Procédure recursif*****/
 int procedure_Syracuse_pair(int n) {
     if (n==1)
       return CSyr ;
