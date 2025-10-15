@@ -313,12 +313,14 @@ int procedure_Syracuse_pair(int n) {
       return CSyr ;
     if (n%2==0)
       return procedure_Syracuse_pair(n/2) ;
+    return 0;
 }
 int procedure_Syracuse_impair(int n) {
   if (n==1)
     return CSyr ;
   if (n%2==0)
     return procedure_Syracuse_pair(3*n+1) ;
+  return 0;
 }
 
 int SyracuseI (int n) {
