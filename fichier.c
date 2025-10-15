@@ -358,7 +358,15 @@ int SyracuseSP (int n) {
 /*************************************************/
 
 int SyracuseR (int n)
-{ return 0 ; }
+{  printf("%d ", n);
+
+  if (n == 1)
+    return 1;
+
+  if (n % 2 == 0)
+    return SyracuseR(n / 2);
+  else
+    return SyracuseR(3 * n + 1); }
 
 
 /*************************************************/
