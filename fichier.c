@@ -309,18 +309,21 @@ int* P_random (int n)
 /***************************/
 /*****Procédure recursif*****/
 int procedure_Syracuse_pair(int n) {
-    if (n==1)
-      return CSyr ;
-    if (n%2==0)
-      return procedure_Syracuse_pair(n/2) ;
-    return 0;
+  printf("%d ", n);
+  if (n == 1) return CSyr;
+  if (n % 2 == 0)
+    return procedure_Syracuse_pair(n / 2);
+  else
+    return procedure_Syracuse_pair(3 * n + 1);
 }
 int procedure_Syracuse_impair(int n) {
   if (n==1)
     return CSyr ;
+  if (n==0)
+    return CSyr ;
   if (n%2==0)
-    return procedure_Syracuse_pair(3*n+1) ;
-  return 0;
+    return procedure_Syracuse_impair(n/2) ;
+  return procedure_Syracuse_impair(3 * n + 1) ;
 }
 
 int SyracuseI (int n) {
@@ -339,11 +342,21 @@ int SyracuseI (int n) {
   return n ;
 
 }
+int syracuse_aux(int n, int acc) {
+  printf("%d ", n);
+
+  if (n == 0 || n == 1)
+    return acc;
+  if (n % 2 == 0)
+    return syracuse_aux(n / 2, acc);
+  return syracuse_aux(3 * n + 1, acc);
+}
 
 /*************************************************/
 
-int SyracuseSF (int n)
-{ return 0 ; }
+int SyracuseSF (int n) {
+  return syracuse_aux(n,CSyr) ;
+}
 
 /*************************************************/
 
@@ -365,8 +378,8 @@ int SyracuseR (int n)
 
   if (n % 2 == 0)
     return SyracuseR(n / 2);
-  else
-    return SyracuseR(3 * n + 1); }
+  return SyracuseR(3 * n + 1);
+}
 
 
 /*************************************************/
