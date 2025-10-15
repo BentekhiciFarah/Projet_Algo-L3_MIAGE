@@ -1,7 +1,7 @@
 
 
 /****************** monôme rosaz@lisn.fr       ****/
-
+/*******************binome reginald.saint-aubin@universite-paris-saclay.fr ****/
 #include <stdio.h>
 #include <stdlib.h>
 
