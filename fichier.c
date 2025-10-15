@@ -216,6 +216,10 @@ int* P_Zero (int n)    // Permutation bidon, qui n'est pas une permutation (sauf
   for (int i=0 ; i<n ; i++) T[i] = 0 ;
   return T ;
 }
+int* P_iden(int n) {
+  int* T = (int*) malloc(n*sizeof(int)) ;
+  for (int i=0 ;i<n ; i++) T[i] = i ;
+}
 
 /*************************************************/
 
@@ -228,7 +232,7 @@ void P_Affiche (int* P , int n)
 /*************************************************/
 
 int* P_identite (int n)
-{ return P_Zero(n) ; }
+{ return P_iden(n) ; }
 
 /*************************************************/
 
