@@ -247,10 +247,13 @@ int* P_Inverse (int* P , int n) {
   if (p == NULL) {
     perror("Erreur : allocation "); 
     exit(EXIT_FAILURE); 
-  
   }
 
-  return P_Zero(n) ; 
+  for (int i = 0; i < n; i++) {
+    int j = *(P + i); 
+    *(p + j) = i; 
+  }
+  return p;  
 }
 
 /*************************************************/
@@ -534,7 +537,7 @@ if (false) {
 
 /******************************* Permutations **************************/
 
-if (true)
+if (false)
 
 { printf("dim des permutations ? : \n") ;
    int dim = Int_Lire() ;
@@ -572,6 +575,7 @@ if (true)
 
 }
 
+
 /******************    Syracuse    *******************************/
 
 
@@ -599,8 +603,6 @@ if (false) {   // Test de toutes les versions
 
 
 /***********************************************************************/
-
-
 
     return 0;
 }
