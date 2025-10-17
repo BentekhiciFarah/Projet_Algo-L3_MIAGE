@@ -242,6 +242,7 @@ bool VerifiekOIter (Liste L, int k) {
         }
         L_aux = L_aux->suite ;
     }
+    return L==NULL && k==0 ;
 }
    
 
@@ -277,11 +278,10 @@ int NTAZ_RTSF (Liste L)
 /*******/
 
 int NTAZ_RTSP (Liste L,int compteur) {
-    if (L==NULL)
+    if (L==NULL || (L->valeur == 0))
         return compteur;
-    if (L->valeur!=0)
-        compteur=compteur+1 ;
-        return NTAZ_RTSP(L->suite,compteur);
+    compteur=compteur+1 ;
+    return NTAZ_RTSP(L->suite,compteur);
 
 }
 
@@ -337,6 +337,10 @@ int main()
         m = ajoute(2, m); 
         m = ajoute(4, m); 
         affiche_rec(m);
+        Liste test_NTAZ_SP = NULL ;
+        test_NTAZ_SP = ajoute(0,test_NTAZ_SP) ;
+        test_NTAZ_SP = ajoute(1,test_NTAZ_SP) ;
+        printf("%d\n",NTAZ_RTSP(test_NTAZ_SP,0));
 
         // Test plus courte 
         if(PlusCourteRec (l, m) == true)
