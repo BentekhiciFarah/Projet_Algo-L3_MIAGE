@@ -7,4 +7,5 @@ include_directories(.)
 
 add_executable(Projet_Algo_L3_MIAGE
         fichier.c
+        SaintAubinBentekhci2.c
         fichier.h)

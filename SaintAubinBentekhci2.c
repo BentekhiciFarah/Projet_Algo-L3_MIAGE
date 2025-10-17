@@ -308,6 +308,7 @@ int main()
         l = ajoute(3, l); 
         l = ajoute(2, l); 
         affiche_rec(l);
+        VerifiekORec(l,1) ;
 
         // Initialisation liste m 
         Liste m = NULL; 
