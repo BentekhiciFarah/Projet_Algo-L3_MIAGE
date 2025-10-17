@@ -1,6 +1,6 @@
 
 
-/****************** monôme rosaz@lisn.fr       ****/
+/****************** binôme : farah.bentekhici@universite-paris-saclay.fr / saintaubinreginald@gmail.com  ****/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -147,7 +147,7 @@ long fact(int n , int v )   // numéro de version
 float Efloat (int n)
 { float e=1 ;
   if (n <=0) {
-    return e ;
+    return e;
   }
   return (e/fact1(n))+Efloat(n-1);}
 
@@ -227,13 +227,34 @@ void P_Affiche (int* P , int n)
 
 /*************************************************/
 
-int* P_identite (int n)
-{ return P_Zero(n) ; }
+int* P_identite (int n) {
+  int *p = malloc(n*sizeof(int)); 
+  if (p == NULL) {
+    perror("Erreur : allocation "); 
+    exit(EXIT_FAILURE); 
+  }
+  int i; 
+  for (i = 0; i < n; i++) {
+    *(p + i) = i; 
+  }  
+  return p; 
+}
 
 /*************************************************/
 
-int* P_Inverse (int* P , int n)
-{ return P_Zero(n) ; }
+int* P_Inverse (int* P , int n) {
+  int *p = malloc(n*sizeof(int)); 
+  if (p == NULL) {
+    perror("Erreur : allocation "); 
+    exit(EXIT_FAILURE); 
+  }
+
+  for (int i = 0; i < n; i++) {
+    int j = *(P + i); 
+    *(p + j) = i; 
+  }
+  return p;  
+}
 
 /*************************************************/
 
@@ -554,6 +575,7 @@ if (false)
 
 }
 
+
 /******************    Syracuse    *******************************/
 
 
@@ -581,8 +603,6 @@ if (false) {   // Test de toutes les versions
 
 
 /***********************************************************************/
-
-
 
     return 0;
 }
