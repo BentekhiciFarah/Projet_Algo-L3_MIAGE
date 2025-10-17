@@ -292,8 +292,21 @@ int NTAZ_RTSP (Liste L)
 /*              TuePos                      */
 /*                                          */
 /********************************************/
+void TuePosRec_aux(Liste *L, int i) {
+    if(*L == NULL)
+        return; 
+    if((*L)->valeur == i)
+        depile(L); 
+    else 
+        TuePosRec_aux(&(*L)->suite, i++); 
+}
 
-void TuePosRec (Liste * L) {}
+void TuePosRec (Liste * L) { // * L car on veut modifier le contenu 
+    if (* L == NULL)
+        return; 
+    TuePosRec_aux(L, 1); 
+}
+
 
 /*******/
 
@@ -318,14 +331,14 @@ void TueRetroPos (Liste * L) {}
 
 int main()
 {
-    Liste l ;
-        // Initialisation liste l  
-        l = NULL; 
-        l = ajoute(0, l); 
-        l = ajoute(3, l); 
-        l = ajoute(0, l); 
-        affiche_rec(l);
-    
+Liste l ;
+    // Initialisation liste l  
+    l = NULL; 
+    l = ajoute(1, l); 
+    l = ajoute(3, l); 
+    l = ajoute(0, l); 
+    affiche_rec(l);
+
 
     // Initialisation liste m 
     Liste m = NULL; 
@@ -365,6 +378,10 @@ int main()
         printf("UnPlusDeuxEgalTrois : true\n");
     else 
         printf("UnPlusDeuxEgalTrois : false\n");  
+
+    TuePosRec (l); 
+    affiche_rec(l); 
+
 
     //VireDernier_rec  (&l) ;
     //VireDernier_iter (&l) ;
