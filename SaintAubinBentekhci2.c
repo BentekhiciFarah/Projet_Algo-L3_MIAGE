@@ -199,7 +199,7 @@ bool PlusCourteRec (Liste L1, Liste L2) {
         return true; 
     if (L2 == NULL && L1 != NULL)
         return false;
-    if(L1 == NULL && L2 == NULL)
+    if(L1 == NULL && L2 == NULL)    // Rien à dire car c strictement inf qui est demandé 
         return false; 
     return PlusCourteRec(L1->suite, L2->suite);  
 }
@@ -216,7 +216,7 @@ bool PlusCourteIter (Liste L1, Liste L2) {
         L1 = L1->suite; 
         L2 = L2->suite; 
     }
-    if (L1 == NULL)     // car on sait pas laquelle s'est terminé en premier 
+    if (L1 == NULL)     // car on sait pas laquelle s'est terminée en premier 
         cpt2++; 
     else 
         cpt1++; 
@@ -252,12 +252,13 @@ bool VerifiekOIter (Liste L, int k) {
     if (L==NULL && k>0)
         return false ;
     Liste L_aux=L ;
-    while (L_aux!=NULL && k>0) {
+    while (L_aux != NULL && k>0) {
         if (L_aux->valeur == 0) {
             k=k-1 ;
         }
         L_aux = L_aux->suite ;
     }
+    return (k == 0); 
 }
    
 
