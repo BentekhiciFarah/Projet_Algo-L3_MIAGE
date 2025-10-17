@@ -336,27 +336,34 @@ int main()
 
     // Test plus courte rec
     if(PlusCourteRec (l, m) == true)
-        printf("true\n");
+        printf("PlusCourteRec : true\n");
     else  
-        printf("false\n"); 
+        printf("PlusCourteRec : false\n"); 
 
     // Test plus courte iter
     if(PlusCourteIter (l, m) == true)
-        printf("true\n");
+        printf("PlusCourteIter : true\n");
     else  
-        printf("false\n");
+        printf("PlusCourteIter :false\n");
 
     // Test Verifiek0 rec
-    if(VerifiekORec(l,5) == true)
-        printf("true\n");
+    if(VerifiekORec(l,2) == true)
+        printf("VerifiekORec : true\n");
     else  
-        printf("false\n");
+        printf("VerifiekORec :false\n");
+
+    // Test Verifk0 iter  
+    if(VerifiekOIter(l,2) == true)
+        printf("VerifiekOIter : true\n");
+    else  
+        printf("VerifiekOIter :false\n");
+
 
     // Teste UnPlusDeux
     if(UnPlusDeuxEgalTrois(l) == true) 
-        printf("true\n");
+        printf("UnPlusDeuxEgalTrois : true\n");
     else 
-        printf("false\n");  
+        printf("UnPlusDeuxEgalTrois : false\n");  
 
     //VireDernier_rec  (&l) ;
     //VireDernier_iter (&l) ;
