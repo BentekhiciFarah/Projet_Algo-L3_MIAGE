@@ -236,7 +236,7 @@ bool VerifiekOIter (Liste L, int k) {
     if (L==NULL && k>0)
         return false ;
     Liste L_aux=L ;
-    while (L_aux!=NULL && k>0) {
+    while (L_aux !=NULL && k>0) {
         if (L_aux->valeur == 0) {
             k=k-1 ;
         }
@@ -340,14 +340,9 @@ int main()
         l = NULL; 
         l = ajoute(5, l); 
         l = ajoute(3, l); 
-        l = ajoute(2, l); 
+        l = ajoute(1, l); 
         affiche_rec(l);
-        VerifiekORec(l,2) ;
-        if (VerifiekORec(l,5)==true )
-            printf("C'estvrai\n") ;
-        else
-            printf("C'est faux\n") ;
-
+        
         // Initialisation liste m 
         Liste m = NULL; 
         m = ajoute(5, m); 
@@ -359,18 +354,20 @@ int main()
         test_NTAZ_SP = ajoute(9,test_NTAZ_SP) ;
         printf("%d\n",NTAZ_RTSP(test_NTAZ_SP));
 
-        // Test plus courte 
+        // Test plus courte rec 
         if(PlusCourteRec (l, m) == true)
-            printf("true\n");
+            printf("PlusCourteRec : true\n");
         else  
-            printf("false\n"); 
+            printf("PlusCourteRec : false\n");
+        
+        // Test plus courte iter
+        if(PlusCourteIter (l, m) == true)
+            printf("PlusCourteIter : true\n");
+        else  
+            printf("PlusCourteIter : false\n"); 
 
-        // Teste UnPlusDeux
-        if(UnPlusDeuxEgalTrois(l) == true) 
-            printf("true\n");
-        else  
-            printf("false\n");
-    printf("%d",NTAZ_RTSP(m));
+
+    printf("%d\n",NTAZ_RTSP(m));
 
     // Test Verifiek0 rec
     if(VerifiekORec(l,2) == true)
@@ -384,14 +381,14 @@ int main()
     else  
         printf("VerifiekOIter :false\n");
 
-
     // Teste UnPlusDeux
     if(UnPlusDeuxEgalTrois(l) == true) 
         printf("UnPlusDeuxEgalTrois : true\n");
     else 
         printf("UnPlusDeuxEgalTrois : false\n");  
 
-    TuePosRec (l); 
+// Test TuePosRec 
+    TuePosRec (&l); 
     affiche_rec(l); 
 
 
