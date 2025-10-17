@@ -278,9 +278,12 @@ int NTAZ_RTSF (Liste L)
 /*******/
 
 int NTAZ_RTSP (Liste L,int compteur) {
-    if (L==NULL || (L->valeur == 0))
+    if (L==NULL )
         return compteur;
-    compteur=compteur+1 ;
+    if (L->valeur!=0) {
+        compteur+=1 ;
+        return NTAZ_RTSP(L->suite,compteur);
+    }
     return NTAZ_RTSP(L->suite,compteur);
 
 }
