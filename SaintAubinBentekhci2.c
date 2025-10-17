@@ -347,7 +347,7 @@ int main()
         printf("false\n");
 
     // Test Verifiek0 rec
-    if(VerifiekORec(l,2) == true)
+    if(VerifiekORec(l,5) == true)
         printf("true\n");
     else  
         printf("false\n");
