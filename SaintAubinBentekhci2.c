@@ -181,8 +181,12 @@ void VideListe(Liste *L)
 /*                                          */
 /********************************************/
 
-bool UnPlusDeuxEgalTrois (Liste L)
-   { return true ; }
+bool UnPlusDeuxEgalTrois (Liste L) {
+    if (L == NULL)
+        return false; 
+    if ((L->valeur + L->suite->valeur) == L->suite->suite->valeur)
+        return true ; 
+}
    
 /********************************************/
 /*                                          */
@@ -190,13 +194,20 @@ bool UnPlusDeuxEgalTrois (Liste L)
 /*                                          */
 /********************************************/
 
-bool PlusCourteRec (Liste L1, Liste L2)
-   { return true ; }
+bool PlusCourteRec (Liste L1, Liste L2) {
+    if (L1 == NULL && L2 != NULL)
+        return true; 
+    if (L2 == NULL && L1 != NULL)
+        return false;  
+    return PlusCourteRec(L1->suite, L2->suite);  
+}
 
 /*******/
   
-bool PlusCourteIter (Liste L1, Liste L2)
-   { return true ; }
+bool PlusCourteIter (Liste L1, Liste L2) {
+
+     return true ; 
+}
    
   
 /********************************************/
@@ -271,15 +282,40 @@ void TueRetroPos (Liste * L) {}
 int main()
 {
     Liste l ;
+        // Initialisation liste l  
+        l = NULL; 
+        l = ajoute(5, l); 
+        l = ajoute(3, l); 
+        l = ajoute(2, l); 
+        affiche_rec(l);
 
-        l = NULL ;
-        VireDernier_rec  (&l) ;
-        VireDernier_iter (&l) ;
-        affiche_rec(l) ; 
-        affiche_iter(l) ; 
-        printf(" %d \n", longueur_iter(l)) ; 
-        printf(" %d \n", longueur_rec(l)) ; 
-        VideListe(&l);
+        // Initialisation liste m 
+        Liste m = NULL; 
+        m = ajoute(5, m); 
+        m = ajoute(3, m); 
+        m = ajoute(2, m); 
+        m = ajoute(4, m); 
+        affiche_rec(m);
+
+        // Test plus courte 
+        if(PlusCourteRec (l, m) == true)
+            printf("true\n");
+        else  
+            printf("false\n"); 
+
+        // Teste UnPlusDeux
+        if(UnPlusDeuxEgalTrois(l) == true) 
+            printf("true\n");
+        else  
+            printf("false\n");  
+
+        //VireDernier_rec  (&l) ;
+        //VireDernier_iter (&l) ;
+        //affiche_rec(l) ; 
+        //affiche_iter(l) ; 
+        //printf(" %d \n", longueur_iter(l)) ; 
+        //printf(" %d \n", longueur_rec(l)) ; 
+        //VideListe(&l);
         return 0;
 }
 
