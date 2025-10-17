@@ -199,30 +199,14 @@ bool PlusCourteRec (Liste L1, Liste L2) {
         return true; 
     if (L2 == NULL && L1 != NULL)
         return false;
-    if(L1 == NULL && L2 == NULL)    // Rien à dire car c strictement inf qui est demandé 
-        return false; 
     return PlusCourteRec(L1->suite, L2->suite);  
 }
 
 /*******/
-
-// Compter le nbr d'éléments de manière simultanée, dès que y en a une qui se finit on dit qu'elle est plus courte
+  
 bool PlusCourteIter (Liste L1, Liste L2) {
-    int cpt1 = 0; int cpt2 = 0; 
 
-    while (L1 != NULL && L2 != NULL) {
-        cpt1++; 
-        cpt2++; 
-        L1 = L1->suite; 
-        L2 = L2->suite; 
-    }
-    if (L1 == NULL)     // car on sait pas laquelle s'est terminée en premier 
-        cpt2++; 
-    else 
-        cpt1++; 
-    if(cpt1 < cpt2)
-        return true; 
-    return false; 
+     return true ; 
 }
    
   
@@ -252,13 +236,12 @@ bool VerifiekOIter (Liste L, int k) {
     if (L==NULL && k>0)
         return false ;
     Liste L_aux=L ;
-    while (L_aux != NULL && k>0) {
+    while (L_aux!=NULL && k>0) {
         if (L_aux->valeur == 0) {
             k=k-1 ;
         }
         L_aux = L_aux->suite ;
     }
-    return (k == 0); 
 }
    
 
@@ -321,59 +304,40 @@ int main()
     Liste l ;
         // Initialisation liste l  
         l = NULL; 
-        l = ajoute(0, l); 
+        l = ajoute(5, l); 
         l = ajoute(3, l); 
-        l = ajoute(0, l); 
+        l = ajoute(2, l); 
         affiche_rec(l);
-    
+        VerifiekORec(l,1) ;
 
-    // Initialisation liste m 
-    Liste m = NULL; 
-    m = ajoute(5, m); 
-    m = ajoute(3, m); 
-    m = ajoute(2, m); 
-    m = ajoute(4, m); 
-    affiche_rec(m);
+        // Initialisation liste m 
+        Liste m = NULL; 
+        m = ajoute(5, m); 
+        m = ajoute(3, m); 
+        m = ajoute(2, m); 
+        m = ajoute(4, m); 
+        affiche_rec(m);
 
-    // Test plus courte rec
-    if(PlusCourteRec (l, m) == true)
-        printf("PlusCourteRec : true\n");
-    else  
-        printf("PlusCourteRec : false\n"); 
+        // Test plus courte 
+        if(PlusCourteRec (l, m) == true)
+            printf("true\n");
+        else  
+            printf("false\n"); 
 
-    // Test plus courte iter
-    if(PlusCourteIter (l, m) == true)
-        printf("PlusCourteIter : true\n");
-    else  
-        printf("PlusCourteIter :false\n");
+        // Teste UnPlusDeux
+        if(UnPlusDeuxEgalTrois(l) == true) 
+            printf("true\n");
+        else  
+            printf("false\n");  
 
-    // Test Verifiek0 rec
-    if(VerifiekORec(l,2) == true)
-        printf("VerifiekORec : true\n");
-    else  
-        printf("VerifiekORec :false\n");
-
-    // Test Verifk0 iter  
-    if(VerifiekOIter(l,2) == true)
-        printf("VerifiekOIter : true\n");
-    else  
-        printf("VerifiekOIter :false\n");
-
-
-    // Teste UnPlusDeux
-    if(UnPlusDeuxEgalTrois(l) == true) 
-        printf("UnPlusDeuxEgalTrois : true\n");
-    else 
-        printf("UnPlusDeuxEgalTrois : false\n");  
-
-    //VireDernier_rec  (&l) ;
-    //VireDernier_iter (&l) ;
-    //affiche_rec(l) ; 
-    //affiche_iter(l) ; 
-    //printf(" %d \n", longueur_iter(l)) ; 
-    //printf(" %d \n", longueur_rec(l)) ; 
-    //VideListe(&l);
-    return 0;
+        //VireDernier_rec  (&l) ;
+        //VireDernier_iter (&l) ;
+        //affiche_rec(l) ; 
+        //affiche_iter(l) ; 
+        //printf(" %d \n", longueur_iter(l)) ; 
+        //printf(" %d \n", longueur_rec(l)) ; 
+        //VideListe(&l);
+        return 0;
 }
 
 
