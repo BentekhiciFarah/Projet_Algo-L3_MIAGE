@@ -199,7 +199,7 @@ bool PlusCourteRec (Liste L1, Liste L2) {
         return true; 
     if (L2 == NULL && L1 != NULL)
         return false;
-    if(L1 == NULL 11 L2 == NULL)
+    if(L1 == NULL && L2 == NULL)
         return false; 
     return PlusCourteRec(L1->suite, L2->suite);  
 }
