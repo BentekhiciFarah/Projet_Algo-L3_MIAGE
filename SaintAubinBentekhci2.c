@@ -198,9 +198,13 @@ bool PlusCourteRec (Liste L1, Liste L2) {
     if (L1 == NULL && L2 != NULL)
         return true; 
     if (L2 == NULL && L1 != NULL)
+<<<<<<< HEAD
         return false;  
     if (L1 == NULL && L2 == NULL)
         return false; 
+=======
+        return false;
+>>>>>>> f97b2af7478f9f930dcc612b94e22c00f4f566be
     return PlusCourteRec(L1->suite, L2->suite);  
 }
 
@@ -232,13 +236,33 @@ bool PlusCourteIter (Liste L1, Liste L2) {
 /*                                          */
 /********************************************/
 
-bool VerifiekORec (Liste L, int k)
-   { return true ; }
+bool VerifiekORec (Liste L, int k) {
+    if (L==NULL && k==0)
+        return true;
+    if (L==NULL && k>0)
+        return false;
+    if (L->valeur == 0 && k>0) {
+        return VerifiekORec(L->suite, k-1) ;
+    }
+    return VerifiekORec(L->suite, k);
+
+}
    
 /*******/
 
-bool VerifiekOIter (Liste L, int k)
-   { return true ; }
+bool VerifiekOIter (Liste L, int k) {
+    if (L==NULL && k==0)
+        return true ;
+    if (L==NULL && k>0)
+        return false ;
+    Liste L_aux=L ;
+    while (L_aux!=NULL && k>0) {
+        if (L_aux->valeur == 0) {
+            k=k-1 ;
+        }
+        L_aux = L_aux->suite ;
+    }
+}
    
 
 /********************************************/
@@ -298,12 +322,22 @@ void TueRetroPos (Liste * L) {}
 int main()
 {
     Liste l ;
+<<<<<<< HEAD
 // Initialisation liste l  
     l = NULL; 
     l = ajoute(5, l); 
     l = ajoute(3, l); 
     l = ajoute(2, l); 
     affiche_rec(l);
+=======
+        // Initialisation liste l  
+        l = NULL; 
+        l = ajoute(5, l); 
+        l = ajoute(3, l); 
+        l = ajoute(2, l); 
+        affiche_rec(l);
+        VerifiekORec(l,1) ;
+>>>>>>> f97b2af7478f9f930dcc612b94e22c00f4f566be
 
     // Initialisation liste m 
     Liste m = NULL; 
