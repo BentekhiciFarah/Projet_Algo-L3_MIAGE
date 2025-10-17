@@ -199,14 +199,30 @@ bool PlusCourteRec (Liste L1, Liste L2) {
         return true; 
     if (L2 == NULL && L1 != NULL)
         return false;  
+    if (L1 == NULL && L2 == NULL)
+        return false; 
     return PlusCourteRec(L1->suite, L2->suite);  
 }
 
 /*******/
-  
-bool PlusCourteIter (Liste L1, Liste L2) {
 
-     return true ; 
+// Compter le nbr d'éléments de manière simultanée, dès que y en a une qui se finit on dit qu'elle est plus courte
+bool PlusCourteIter (Liste L1, Liste L2) {
+    int cpt1 = 0; int cpt2 = 0; 
+
+    while (L1 != NULL && L2 != NULL) {
+        cpt1++; 
+        cpt2++; 
+        L1 = L1->suite; 
+        L2 = L2->suite; 
+    }
+    if (L1 == NULL)     // car on sait pas laquelle s'est terminé en premier 
+        cpt2++; 
+    else 
+        cpt1++; 
+    if(cpt1 < cpt2)
+        return true; 
+    return false; 
 }
    
   
@@ -282,41 +298,48 @@ void TueRetroPos (Liste * L) {}
 int main()
 {
     Liste l ;
-        // Initialisation liste l  
-        l = NULL; 
-        l = ajoute(5, l); 
-        l = ajoute(3, l); 
-        l = ajoute(2, l); 
-        affiche_rec(l);
+// Initialisation liste l  
+    l = NULL; 
+    l = ajoute(5, l); 
+    l = ajoute(3, l); 
+    l = ajoute(2, l); 
+    affiche_rec(l);
 
-        // Initialisation liste m 
-        Liste m = NULL; 
-        m = ajoute(5, m); 
-        m = ajoute(3, m); 
-        m = ajoute(2, m); 
-        m = ajoute(4, m); 
-        affiche_rec(m);
+    // Initialisation liste m 
+    Liste m = NULL; 
+    m = ajoute(5, m); 
+    m = ajoute(3, m); 
+    m = ajoute(2, m); 
+    m = ajoute(4, m); 
+    affiche_rec(m);
 
-        // Test plus courte 
-        if(PlusCourteRec (l, m) == true)
-            printf("true\n");
-        else  
-            printf("false\n"); 
+    // Test plus courte rec
+    if(PlusCourteRec (l, m) == true)
+        printf("true\n");
+    else  
+        printf("false\n"); 
 
-        // Teste UnPlusDeux
-        if(UnPlusDeuxEgalTrois(l) == true) 
-            printf("true\n");
-        else  
-            printf("false\n");  
+    // Test plus courte iter
+    if(PlusCourteIter (l, m) == true)
+        printf("true\n");
+    else  
+        printf("false\n");
 
-        //VireDernier_rec  (&l) ;
-        //VireDernier_iter (&l) ;
-        //affiche_rec(l) ; 
-        //affiche_iter(l) ; 
-        //printf(" %d \n", longueur_iter(l)) ; 
-        //printf(" %d \n", longueur_rec(l)) ; 
-        //VideListe(&l);
-        return 0;
+
+    // Teste UnPlusDeux
+    if(UnPlusDeuxEgalTrois(l) == true) 
+        printf("true\n");
+    else 
+        printf("false\n");  
+
+    //VireDernier_rec  (&l) ;
+    //VireDernier_iter (&l) ;
+    //affiche_rec(l) ; 
+    //affiche_iter(l) ; 
+    //printf(" %d \n", longueur_iter(l)) ; 
+    //printf(" %d \n", longueur_rec(l)) ; 
+    //VideListe(&l);
+    return 0;
 }
 
 
