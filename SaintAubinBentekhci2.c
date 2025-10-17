@@ -251,8 +251,18 @@ bool VerifiekOIter (Liste L, int k) {
 /*                                          */
 /********************************************/
 
-int NTAZ_It (Liste L)
-   { return 0 ; }
+int NTAZ_It (Liste L) {
+    if (L==NULL)
+        return 0 ;
+    Liste copie=L;
+    int compteur=0;
+    while (copie !=NULL && copie->valeur!=0) {
+        compteur+=1 ;
+        copie=copie->suite ;
+    }
+    return compteur ;
+
+}
 
 /*******/
 
@@ -309,6 +319,10 @@ int main()
         l = ajoute(2, l); 
         affiche_rec(l);
         VerifiekORec(l,1) ;
+        if (VerifiekORec(l,1)==true )
+            printf("C'estvrai") ;
+        else
+            printf("C'est faux\n") ;
 
         // Initialisation liste m 
         Liste m = NULL; 
