@@ -276,8 +276,14 @@ int NTAZ_RTSF (Liste L)
 
 /*******/
 
-int NTAZ_RTSP (Liste L)
-   { return 0 ; }
+int NTAZ_RTSP (Liste L,int compteur) {
+    if (L==NULL)
+        return compteur;
+    if (L->valeur!=0)
+        compteur=compteur+1 ;
+        return NTAZ_RTSP(L->suite,compteur);
+
+}
 
 
 /********************************************/
@@ -318,9 +324,9 @@ int main()
         l = ajoute(3, l); 
         l = ajoute(2, l); 
         affiche_rec(l);
-        VerifiekORec(l,1) ;
-        if (VerifiekORec(l,1)==true )
-            printf("C'estvrai") ;
+        VerifiekORec(l,2) ;
+        if (VerifiekORec(l,5)==true )
+            printf("C'estvrai\n") ;
         else
             printf("C'est faux\n") ;
 
@@ -342,7 +348,8 @@ int main()
         if(UnPlusDeuxEgalTrois(l) == true) 
             printf("true\n");
         else  
-            printf("false\n");  
+            printf("false\n");
+    printf("%d",NTAZ_RTSP(m,0));
 
         //VireDernier_rec  (&l) ;
         //VireDernier_iter (&l) ;
