@@ -322,14 +322,6 @@ void TueRetroPos (Liste * L) {}
 int main()
 {
     Liste l ;
-<<<<<<< HEAD
-// Initialisation liste l  
-    l = NULL; 
-    l = ajoute(5, l); 
-    l = ajoute(3, l); 
-    l = ajoute(2, l); 
-    affiche_rec(l);
-=======
         // Initialisation liste l  
         l = NULL; 
         l = ajoute(5, l); 
@@ -337,7 +329,6 @@ int main()
         l = ajoute(2, l); 
         affiche_rec(l);
         VerifiekORec(l,1) ;
->>>>>>> f97b2af7478f9f930dcc612b94e22c00f4f566be
 
     // Initialisation liste m 
     Liste m = NULL; 
