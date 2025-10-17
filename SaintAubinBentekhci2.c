@@ -320,11 +320,11 @@ int main()
     Liste l ;
         // Initialisation liste l  
         l = NULL; 
-        l = ajoute(5, l); 
+        l = ajoute(0, l); 
         l = ajoute(3, l); 
-        l = ajoute(2, l); 
+        l = ajoute(0, l); 
         affiche_rec(l);
-        VerifiekORec(l,1) ;
+    
 
     // Initialisation liste m 
     Liste m = NULL; 
@@ -346,6 +346,11 @@ int main()
     else  
         printf("false\n");
 
+    // Test Verifiek0 rec
+    if(VerifiekORec(l,2) == true)
+        printf("true\n");
+    else  
+        printf("false\n");
 
     // Teste UnPlusDeux
     if(UnPlusDeuxEgalTrois(l) == true) 
