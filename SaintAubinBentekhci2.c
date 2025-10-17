@@ -276,16 +276,18 @@ int NTAZ_RTSF (Liste L)
    { return 0 ; }
 
 /*******/
-
-int NTAZ_RTSP (Liste L,int compteur) {
-    if (L==NULL )
-        return compteur;
-    if (L->valeur!=0) {
-        compteur+=1 ;
-        return NTAZ_RTSP(L->suite,compteur);
+void NTAZ_RTSP_terminal(Liste L, int *compteur) {
+    if (L == NULL || L->valeur == 0)
+        return;
+    else {
+        (*compteur)++; // compteur
+        NTAZ_RTSP_terminal(L->suite, compteur);
     }
-    return NTAZ_RTSP(L->suite,compteur);
-
+}
+int NTAZ_RTSP (Liste L) {
+    int compteur =0 ;
+    NTAZ_RTSP_terminal(L, &compteur);
+    return compteur ;
 }
 
 
@@ -341,9 +343,8 @@ int main()
         m = ajoute(4, m); 
         affiche_rec(m);
         Liste test_NTAZ_SP = NULL ;
-        test_NTAZ_SP = ajoute(0,test_NTAZ_SP) ;
-        test_NTAZ_SP = ajoute(1,test_NTAZ_SP) ;
-        printf("%d\n",NTAZ_RTSP(test_NTAZ_SP,0));
+        test_NTAZ_SP = ajoute(9,test_NTAZ_SP) ;
+        printf("%d\n",NTAZ_RTSP(test_NTAZ_SP));
 
         // Test plus courte 
         if(PlusCourteRec (l, m) == true)
@@ -356,7 +357,7 @@ int main()
             printf("true\n");
         else  
             printf("false\n");
-    printf("%d",NTAZ_RTSP(m,0));
+    printf("%d",NTAZ_RTSP(m));
 
         //VireDernier_rec  (&l) ;
         //VireDernier_iter (&l) ;
