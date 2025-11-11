@@ -182,10 +182,8 @@ void VideListe(Liste *L)
 /********************************************/
 
 bool UnPlusDeuxEgalTrois (Liste L) {
-    if (L == NULL)
-        return false; 
-    if ((L->valeur + L->suite->valeur) == L->suite->suite->valeur)
-        return true ; 
+    v1 = 0, v2 = 0, v3 = 0 ;
+    if(L != NULL)
 }
    
 /********************************************/
@@ -299,8 +297,10 @@ int NTAZ_RTSP (Liste L) {
 void TuePosRec_aux(Liste *L, int i) {
     if(*L == NULL)
         return; 
-    if((*L)->valeur == i)
+    if((*L)->valeur == i) {
         depile(L); 
+        TuePosRec_aux(&(*L)->suite, i); 
+    }
     else 
         TuePosRec_aux(&(*L)->suite, i++); 
 }
@@ -338,9 +338,10 @@ int main()
     Liste l ;
         // Initialisation liste l  
         l = NULL; 
-        l = ajoute(5, l); 
-        l = ajoute(3, l); 
-        l = ajoute(1, l); 
+        l = ajoute(0, l); 
+        //l = ajoute(2, l); 
+        //l = ajoute(1, l); 
+        printf("Liste l : ");
         affiche_rec(l);
         
         // Initialisation liste m 
@@ -349,11 +350,12 @@ int main()
         m = ajoute(3, m); 
         m = ajoute(2, m); 
         m = ajoute(4, m); 
+        printf("Liste m : ");
         affiche_rec(m);
         Liste test_NTAZ_SP = NULL ;
         test_NTAZ_SP = ajoute(9,test_NTAZ_SP) ;
         printf("%d\n",NTAZ_RTSP(test_NTAZ_SP));
-
+        printf("%d\n",NTAZ_RTSP(m));
         // Test plus courte rec 
         if(PlusCourteRec (l, m) == true)
             printf("PlusCourteRec : true\n");
@@ -367,38 +369,37 @@ int main()
             printf("PlusCourteIter : false\n"); 
 
 
-    printf("%d\n",NTAZ_RTSP(m));
+        // Test Verifiek0 rec
+        if(VerifiekORec(l,2) == true)
+            printf("VerifiekORec : true\n");
+        else  
+            printf("VerifiekORec :false\n");
 
-    // Test Verifiek0 rec
-    if(VerifiekORec(l,2) == true)
-        printf("VerifiekORec : true\n");
-    else  
-        printf("VerifiekORec :false\n");
+        // Test Verifk0 iter  
+        if(VerifiekOIter(l,2) == true)
+            printf("VerifiekOIter : true\n");
+        else  
+            printf("VerifiekOIter :false\n");
 
-    // Test Verifk0 iter  
-    if(VerifiekOIter(l,2) == true)
-        printf("VerifiekOIter : true\n");
-    else  
-        printf("VerifiekOIter :false\n");
+        // Teste UnPlusDeux
+        if(UnPlusDeuxEgalTrois(l) == true) 
+            printf("UnPlusDeuxEgalTrois : true\n");
+        else 
+            printf("UnPlusDeuxEgalTrois : false\n");  
 
-    // Teste UnPlusDeux
-    if(UnPlusDeuxEgalTrois(l) == true) 
-        printf("UnPlusDeuxEgalTrois : true\n");
-    else 
-        printf("UnPlusDeuxEgalTrois : false\n");  
-
-// Test TuePosRec 
-    TuePosRec (&l); 
-    affiche_rec(l); 
+        // Test TuePosRec 
+        printf("Liste l after TuePosRec : "); 
+        TuePosRec (&l); 
+        affiche_rec(l); 
 
 
-    //VireDernier_rec  (&l) ;
-    //VireDernier_iter (&l) ;
-    //affiche_rec(l) ; 
-    //affiche_iter(l) ; 
-    //printf(" %d \n", longueur_iter(l)) ; 
-    //printf(" %d \n", longueur_rec(l)) ; 
-    //VideListe(&l);
+        //VireDernier_rec  (&l) ;
+        //VireDernier_iter (&l) ;
+        //affiche_rec(l) ; 
+        //affiche_iter(l) ; 
+        //printf(" %d \n", longueur_iter(l)) ; 
+        //printf(" %d \n", longueur_rec(l)) ; 
+        //VideListe(&l);
     return 0;
 }
 
