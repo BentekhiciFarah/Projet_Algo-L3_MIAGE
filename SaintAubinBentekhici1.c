@@ -277,12 +277,32 @@ int* P_Inverse (int* P , int n) {
 /*************************************************/
 
 void P_Compose(int* P, int* Q, int* R , int n)  // écrit PoQ dans R
-{ }
+{
+  for (int i = 0; i < n; i++) {
+    R[i] = P[Q[i]]; }
+}
 
 /*************************************************/
 
 bool P_Verifie (int* P , int n)
-{ return true ; }
+{
+  bool permutations_vu[n];
+  for (int i = 0; i < n; i++) {
+    permutations_vu[i] = false;
+  }
+
+  for (int i = 0; i < n; i++) {
+    int x = P[i];
+    if (x < 0 || x >= n) {
+      return false;
+    }
+    if (permutations_vu[x]) {
+      return false;
+    }
+    permutations_vu[x] = true;
+  }
+
+  return true;}
 
 
 /**********************/
