@@ -149,7 +149,7 @@ float Efloat (int n)
   if (n <=0) {
     return e;
   }
-  return (e/fact1(n))+Efloat(n-1);}
+  return (n/fact1(n))+Efloat(n-1);}
 
 /*************************************************/
 
@@ -168,17 +168,35 @@ long double Elongdouble ()
 /*************************************************/
 
 void afficheYfloat (int n)
-{ }
+{
+  float y =Efloat(0) -1 ;
+
+  for (int k = 0; k < n && k<30; k++) {
+    printf("y_%d = %.10f\n", k, y);
+    y = k * y - 1;
+  }
+}
 
 /*************************************************/
 
-void afficheYdouble (int n)
-{ }
+void afficheYdouble (int n) {
+  double y=Edouble() -1.0 ;
+  for (int k = 0; k < n; k++) {
+    printf("y_%d = %.15f\n", k, y);
+    y = k * y - 1;
+  }
+}
 
 /*************************************************/
 
-void afficheYlongdouble (int n)
-{ }
+void afficheYlongdouble (int n) {
+  long double y = Elongdouble() - 1.0L;
+
+  for (int k = 0; k < n; k++) {
+    printf("y_%d = %.20Lf\n", k, y);
+    y = k * y - 1;
+  }
+}
 
 /*************************************************/
 /*                                               */
