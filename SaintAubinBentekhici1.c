@@ -290,7 +290,6 @@ bool P_Verifie (int* P , int n)
   for (int i = 0; i < n; i++) {
     permutations_vu[i] = false;
   }
-
   for (int i = 0; i < n; i++) {
     int x = P[i];
     if (x < 0 || x >= n) {
@@ -313,7 +312,20 @@ int* P_power1(int* P, int n, int k) // itératif, complexité environ k
 /**********************/
 
 int* P_power2(int* P, int n, int k) // récursif, complexité environ k
-{ return P_Zero(n) ; }
+{
+  if (k==0) // cas ou est dans l'identité
+    return P_identite(n) ;
+  if (k==1) {
+    int* R = malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) R[i] = P[i];
+    return R;
+  }
+  int* nouv_permu=P_power2(P,n,k-1);
+  int* R = malloc(n*sizeof(int));
+  P_Compose(nouv_permu,P,R,n);
+  free(nouv_permu) ;
+  return R ;
+}
 
 /**********************/
 
@@ -477,7 +489,19 @@ int Syracuse (int n, int i)
 
  int main()
 {
+  const int n =5 ;
+  const int P_data[5] = {1,2,3,4,0};
+  int* P = malloc(n*sizeof(int));
+  for(int i=0;i<n;i++) P[i] = P_data[i];
 
+  printf("Test 1 : Identité\n");
+  for (int k = 0; k <= 5; k++) {
+    int* R = P_power2(P, n, k);
+    printf("P^%d = ", k);
+    P_Affiche(R, n);
+    free(R);
+  }
+  free(P);
 
 
 /************************************************************************/
@@ -499,6 +523,7 @@ if (true) {
        printf("double : %d octets\n", (int) sizeof(double));
        printf("long double : %d octets\n", (int) sizeof(long double));
        printf("\n") ;
+
 
        printf("limite des flottants (peuvent varier selon le compilo) :\n") ;
 
