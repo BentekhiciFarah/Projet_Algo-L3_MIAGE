@@ -310,6 +310,11 @@ int* P_power1(int* P, int n, int k) // itératif, complexité environ k
 { return P_Zero(n) ; }
 
 /**********************/
+void copy(int* src,int* dst, int n,int i) {
+  if (i == n) return;
+  dst[i] = src[i];
+  copy(src,dst,n,i + 1);
+}
 
 int* P_power2(int* P, int n, int k) // récursif, complexité environ k
 {
@@ -317,7 +322,7 @@ int* P_power2(int* P, int n, int k) // récursif, complexité environ k
     return P_identite(n) ;
   if (k==1) {
     int* R = malloc(n * sizeof(int));
-    for (int i = 0; i < n; i++) R[i] = P[i];
+    copy(P,R,n,0);
     return R;
   }
   int* nouv_permu=P_power2(P,n,k-1);
