@@ -308,9 +308,13 @@ bool P_Verifie (int* P , int n)
 
 int* P_power1(int* P, int n, int k) // itératif, complexité environ k
 {
+  if (P==NULL) {
+    return 0; // anticipe le cas ou le tableau est vide
+  }
   if (k==0) {
     return P_identite(n);
   }
+
   int* resultat = (int*) malloc(n*sizeof(int));
   for (int i=0 ; i<n ; i++) {
     resultat[i] = P[i];
