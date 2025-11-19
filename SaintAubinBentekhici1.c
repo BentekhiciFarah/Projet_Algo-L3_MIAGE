@@ -251,6 +251,7 @@ int* P_identite (int n) {
     perror("Erreur : allocation "); 
     exit(EXIT_FAILURE); 
   }
+
   int i; 
   for (i = 0; i < n; i++) {
     *(p + i) = i; 
@@ -284,8 +285,10 @@ void P_Compose(int* P, int* Q, int* R , int n)  // écrit PoQ dans R
 
 /*************************************************/
 
-bool P_Verifie (int* P , int n)
+bool P_Verifie (int* P ,  int n)
 {
+  if (P==NULL)
+    return false;
   bool permutations_vu[n];
   for (int i = 0; i < n; i++) {
     permutations_vu[i] = false;
@@ -320,7 +323,7 @@ int* P_power1(int* P, int n, int k) // itératif, complexité environ k
     resultat[i] = P[i];
   }
   int i =2;
-  while (i<k) {
+  while (i<=k) {
     int* variables_temporaire = (int*) malloc(n*sizeof(int)); // On alloue un tableau 'dynamique' de taille n
     P_Compose(resultat,P,variables_temporaire,n); // On fait P^k=P^k-1 o resultat avec resultat=P
     free(resultat) ;// resultat ayant servi on le libère
@@ -380,7 +383,31 @@ int* P_power3(int* P, int n, int k) // récursif, complexité environ log2(k)
 /**********************/
 
 int* P_power4(int* P, int n, int k) // itératif, complexité environ log2(k)
-{ return P_Zero(n) ; }
+{
+  if (P==NULL) {
+    return 0 ;
+  }
+  if (k==0) {
+    return P_identite(n) ;
+  }
+  int* r=P_identite(n);
+  int* b= malloc(n*sizeof(int)) ;
+  copy(P,b,n,0) ;
+  while (k>0) {
+    if (k%2==1) {
+      int* r2 = malloc(n*sizeof(int));
+      P_Compose(r,b,r2,n) ;
+      free(r) ;
+      r=r2 ;
+    }
+    int* b2= malloc(n*sizeof(int)) ;
+    P_Compose(b,b,b2,n) ;
+    b=b2 ;
+    k/=2 ;
+  }
+  free(b); // Potentielle cas pour 'catch' des fuites
+  return r ;
+}
 
 /*************************************************/
 
@@ -403,7 +430,19 @@ int* P_power(int* P, int n, int k, int v )   // version v de 1 à VersionsPuissa
 /*************************************************/
 
 int* P_random (int n)
-{ return P_identite(n) ;
+{ if (n==0) {
+    return NULL ;
+  }
+  int* P = P_identite(n);
+
+  for (int i = n - 1; i > 0; i--) {
+    int j = rand() % (i + 1);
+    int tmp = P[i];
+    P[i] = P[j];
+    P[j] = tmp;
+  }
+
+  return P;
 }
 
 
@@ -541,7 +580,7 @@ int Syracuse (int n, int i)
 
   printf("Test 1 : Identité\n");
   for (int k = 0; k <= 5; k++) {
-    int* R = P_power1(P, n, k);
+    int* R = P_power4(P, n, k);
     printf("P^%d = ", k);
     P_Affiche(R, n);
     free(R);
@@ -645,7 +684,7 @@ if (false) {
 
 /******************************* Permutations **************************/
 
-if (false)
+if (true)
 
 { printf("dim des permutations ? : \n") ;
    int dim = Int_Lire() ;
