@@ -359,8 +359,22 @@ int* P_power3(int* P, int n, int k) // récursif, complexité environ log2(k)
 { if (k==0)
     return P_identite(n) ;
   if (k==1) {
-
+    int* resultat = malloc(n*sizeof(int));
+    copy(P,resultat,n,0); // Fonction auxiliaire de copie
   }
+  // méthode vu en cours
+  int* p_log=P_power3(P,n,k/2);
+
+  int* P_carre=malloc(n*sizeof(int)) ;
+  P_Compose(p_log,p_log,P_carre,n) ;
+
+  if (k%2==0) {
+    return P_carre ;
+  }
+  int* resultat=malloc(n*sizeof(int)) ;
+  P_Compose(P_carre,P,resultat,n) ;
+  free(P_carre) ;
+  return resultat ;
 }
 
 /**********************/
