@@ -307,7 +307,24 @@ bool P_Verifie (int* P , int n)
 /**********************/
 
 int* P_power1(int* P, int n, int k) // itératif, complexité environ k
-{ return P_Zero(n) ; }
+{
+  if (k==0) {
+    return P_identite(n);
+  }
+  int* resultat = (int*) malloc(n*sizeof(int));
+  for (int i=0 ; i<n ; i++) {
+    resultat[i] = P[i];
+  }
+  int i =2;
+  while (i<k) {
+    int* variables_temporaire = (int*) malloc(n*sizeof(int)); // On alloue un tableau 'dynamique' de taille n
+    P_Compose(resultat,P,variables_temporaire,n); // On fait P^k=P^k-1 o resultat avec resultat=P
+    free(resultat) ;// resultat ayant servi on le libère
+    resultat = variables_temporaire ; // resultat pointe vers le tableau permuté
+    i-=-1 ;
+  }
+  return P_Zero(n) ;
+}
 
 /**********************/
 void copy(int* src,int* dst, int n,int i) {
@@ -322,7 +339,7 @@ int* P_power2(int* P, int n, int k) // récursif, complexité environ k
     return P_identite(n) ;
   if (k==1) {
     int* R = malloc(n * sizeof(int));
-    copy(P,R,n,0);
+    copy(P,R,n,0); // Appel de ma fonction auxiliare
     return R;
   }
   int* nouv_permu=P_power2(P,n,k-1);
