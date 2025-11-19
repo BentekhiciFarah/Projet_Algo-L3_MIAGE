@@ -323,7 +323,7 @@ int* P_power1(int* P, int n, int k) // itératif, complexité environ k
     resultat = variables_temporaire ; // resultat pointe vers le tableau permuté
     i-=-1 ;
   }
-  return P_Zero(n) ;
+  return resultat ;
 }
 
 /**********************/
@@ -352,7 +352,12 @@ int* P_power2(int* P, int n, int k) // récursif, complexité environ k
 /**********************/
 
 int* P_power3(int* P, int n, int k) // récursif, complexité environ log2(k)
-{ return P_Zero(n) ; }
+{ if (k==0)
+    return P_identite(n) ;
+  if (k==1) {
+
+  }
+}
 
 /**********************/
 
@@ -518,7 +523,7 @@ int Syracuse (int n, int i)
 
   printf("Test 1 : Identité\n");
   for (int k = 0; k <= 5; k++) {
-    int* R = P_power2(P, n, k);
+    int* R = P_power1(P, n, k);
     printf("P^%d = ", k);
     P_Affiche(R, n);
     free(R);
