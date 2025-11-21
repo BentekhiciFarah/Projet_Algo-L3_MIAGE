@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /*************************************************/
 /*                                               */
@@ -349,7 +350,8 @@ bool P_Verifie (int* P ,  int n)
     permutations_vu[x] = true;
   }
 
-  return true;}
+  return true;
+}
 
 
 /**********************/
@@ -478,6 +480,7 @@ int* P_random (int n)
 { if (n==0) {
     return NULL ;
   }
+  srand(time(NULL));
   int* P = P_identite(n);
 
   for (int i = n - 1; i > 0; i--) {
@@ -729,7 +732,7 @@ if (false) {
 
 /******************************* Permutations **************************/
 
-if (false)
+if (true)
 
 { printf("dim des permutations ? : \n") ;
    int dim = Int_Lire() ;
