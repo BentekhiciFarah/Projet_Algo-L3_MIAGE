@@ -190,7 +190,7 @@ long double Elongdouble () {
   
   long double e = 1.0L ; // initialisation à 0
 
-  unsigned long long i = 1 ; 
+  unsigned long long i = 1 ; // Pour éviter quelquonque débordement
   long double terme = 1.0L ; // car 1 / 0! = 1
 
   while(true) {  // je sais pas ou je m'arrete, j'utilise un while
