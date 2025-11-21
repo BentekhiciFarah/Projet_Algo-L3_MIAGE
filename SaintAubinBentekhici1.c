@@ -143,23 +143,68 @@ long fact(int n , int v )   // numéro de version
      // Il est proposé de faire 3 versions pour observer des phénomènes de précision.
      // C'est le même code, seul le type change.
 
+// Critère d'arret : on sait que 1/truc converge vers 0 quand truc est trop grand. 1/n! converge encore plus vite car truc grandit 
+// très rapidement avec la factorielle. On va donc s'arreter quand ajouter un terme 1/n! ne change plus rien à la somme. 
 
-float Efloat (int n)
-{ float e=1 ;
-  if (n <=0) {
-    return e;
+float Efloat (int n) { 
+  float e = 1 ; // initialisation à 0
+
+  int i = 1 ; 
+  float terme = 1 ; // car 1 / 0! = 1
+  while(i <= n) {  // je sais pas ou je m'arrete, j'utilise un while
+    terme = terme / i ;    // Calcul du terme que je veux ajouter
+    
+    if (e + terme == e) 
+      return e;          // je retourne e si l'ajout du terme ne change rien   
+    else {
+      e = e + terme;       // sinon je continue à sommer
+      i = i + 1; 
+    }
   }
-  return (n/fact1(n))+Efloat(n-1);}
+  return e ; 
+}
+
 
 /*************************************************/
 
-double Edouble ()
-{ return 0 ; }
+double Edouble () {
+  double e= 1 ; // initialisation à 0
+
+  int i = 1 ; 
+  double terme = 1.0f ; // car 1 / 0! = 1
+  while(true) {  // je sais pas ou je m'arrete, j'utilise un while
+    terme = terme / i ;    // Calcul du terme que je veux ajouter sans recalculer la fact à chaque fois
+    
+    if (e + terme == e) 
+      return e;          // je retourne e si l'ajout du terme ne change rien   
+    else {
+      e = e + terme;       // sinon je continue à sommer
+      i = i + 1; 
+    }
+  } 
+}
 
 /*************************************************/
 
-long double Elongdouble ()
-{ return 0 ; }
+long double Elongdouble () {
+  
+  long double e = 1.0L ; // initialisation à 0
+
+  unsigned long long i = 1 ; 
+  long double terme = 1.0L ; // car 1 / 0! = 1
+
+  while(true) {  // je sais pas ou je m'arrete, j'utilise un while
+    terme = terme / i ;    // Calcul du terme que je veux ajouter
+    
+    if (e + terme == e) 
+      return e;          // je retourne e si l'ajout du terme ne change rien   
+    else {
+      e = e + terme;       // sinon je continue à sommer
+      i = i + 1; 
+    }
+  }
+} 
+
 
 /*************************************************/
 /*                                               */
@@ -663,11 +708,11 @@ if (true) {
   // e = 2,7182818284 5904523536 0287471352 6624977572 4709369995
   //       9574966967 6277240766 3035354759 4571382178 5251664274
 
-if (false) {
+if (true) {
 
         printf(" e1 = %.20f  \n", Efloat(10) ) ;
-        printf(" e3 = %.30lf \n", Edouble() ) ;
-        printf(" e3 = %.40LF \n", Elongdouble() ) ;
+        printf(" e2 = %.30lf \n", Edouble() ) ;
+        printf(" e3 = %.40Lf \n", Elongdouble() ) ;
         printf("\n") ;
 
 
@@ -684,7 +729,7 @@ if (false) {
 
 /******************************* Permutations **************************/
 
-if (true)
+if (false)
 
 { printf("dim des permutations ? : \n") ;
    int dim = Int_Lire() ;
