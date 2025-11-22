@@ -219,7 +219,7 @@ void afficheYfloat (int n)
 
   for (int k = 0; k < n && k<30; k++) {
     printf("y_%d = %.10f\n", k, y);
-    y = k * y - 1;
+    y = k* y - 1.0f;
   }
 }
 
@@ -480,7 +480,7 @@ int* P_random (int n)
 { if (n==0) {
     return NULL ;
   }
-  srand(time(NULL));
+
   int* P = P_identite(n);
 
   for (int i = n - 1; i > 0; i--) {
@@ -621,6 +621,7 @@ int Syracuse (int n, int i)
 
  int main()
 {
+  srand(time(NULL));
   const int n =5 ;
   const int P_data[5] = {1,2,3,4,0};
   int* P = malloc(n*sizeof(int));
@@ -642,7 +643,7 @@ int Syracuse (int n, int i)
 
 /************************  taille des nombres  *************************/
 
-if (true) {
+if (false) {
 
 
        printf("tailles des nombres (peuvent varier selon le compilo) :\n") ;
@@ -721,7 +722,7 @@ if (true) {
 
 }
 
-if (false) {
+if (true) {
             printf("Valeurs de Y, selon float, double, longdouble :\n") ;
             afficheYfloat(30) ;
             afficheYdouble(30) ;
@@ -732,7 +733,7 @@ if (false) {
 
 /******************************* Permutations **************************/
 
-if (true)
+if (false)
 
 { printf("dim des permutations ? : \n") ;
    int dim = Int_Lire() ;
