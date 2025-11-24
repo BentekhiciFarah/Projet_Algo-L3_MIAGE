@@ -179,10 +179,46 @@ ListeDeListes PPQ(int p1, int p2, int q) {
 
                 // ajout au résultat
                 resultat=ajoute_liste(nouvelle_solution,resultat) ;
+                courant=courant->suite ;
             }
             // Liberer
             libere_liste_de_listes(solution_restantes) ;
         }
     }
     return resultat ;
+}
+
+
+int main() {
+    printf("Test PPQ(2, 4, 9):\n");
+    ListeDeListes resultat = PPQ(2, 4, 9);
+
+    if (resultat == NULL) {
+        printf("Aucune solution trouvée\n");
+    } else {
+        affiche_liste_de_listes(resultat);
+        libere_liste_de_listes(resultat);
+    }
+
+    // Test avec des valeurs plus simples pour vérifier
+    printf("\nTest PPQ(1, 2, 3):\n");
+    ListeDeListes resultat2 = PPQ(1, 2, 3);
+    if (resultat2 == NULL) {
+        printf("Aucune solution trouvée\n");
+    } else {
+        affiche_liste_de_listes(resultat2);
+        libere_liste_de_listes(resultat2);
+    }
+
+    // Test avec q = 0 (liste vide)
+    printf("\nTest PPQ(1, 3, 0):\n");
+    ListeDeListes resultat3 = PPQ(1, 3, 0);
+    if (resultat3 == NULL) {
+        printf("Aucune solution trouvée\n");
+    } else {
+        affiche_liste_de_listes(resultat3);
+        libere_liste_de_listes(resultat3);
+    }
+
+    return 0;
 }
