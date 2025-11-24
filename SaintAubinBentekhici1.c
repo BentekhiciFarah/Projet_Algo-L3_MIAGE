@@ -168,7 +168,7 @@ float Efloat (int n) {
 
 /*************************************************/
 
-double Edouble () {
+double Edouble () { 
   double e= 1 ; // initialisation à 0
 
   int i = 1 ; 
@@ -187,7 +187,7 @@ double Edouble () {
 
 /*************************************************/
 
-long double Elongdouble () {
+long double Elongdouble () { // Sur mon compilateur ça donne 0.00000000 mais sur celui de mon binome ça fonctionne (Je pense que le mien ne prend pas en compte ce type là) 
   
   long double e = 1.0L ; // initialisation à 0
 
@@ -584,28 +584,77 @@ int SyracuseR (int n)
 
 // Version itérative 
 int SyracuseI (int n) { 
-  if (n == 0) 
+  if (n == 0) // Syr(0) = 2025
     return CSyr ; 
-  
+
+  int Syr = CSyr ; 
+
+  for (int i = 1; i <= n; i++) { // je calcule terme par terme jusqu'à n en commençant par syr(1)
+    if (Syr % 2 == 0) {
+      Syr = Syr / 2 ; 
+    }
+    else {
+      Syr = 3 * Syr + 1 ;  
+    }
+  }
+  return Syr; 
 }
   
 /*************************************************/
 
-// Version récursive terminale avec SF
-int SyracuseSF (int n)
-{ return 0 ; }
+// La sous fonction pour la version itérative : Simulation du for de la version intérative en récursif ss modification des arguments  
+int SF(int n, int Syr) {
+  if (n == 0)               // Condition d'arret : si j'arrive à 0 je retourne tout ce que j'ai calculé 
+    return Syr; 
+  if(Syr % 2 == 0)
+    return SF(n - 1, Syr / 2) ; 
+  return SF(n - 1, 3 * Syr + 1) ; 
+}
+
+int SyracuseSF (int n) {
+  if (n == 0)                 // Cas de base ; Syr(0)
+    return CSyr ; 
+  return SF(n, CSyr) ;        // Si n != 0, je lance avec Sur(0) avec complexité linéaire O(n)
+}
+
+  
 
 /*************************************************/
 
-// Version récursive terminale avec SP 
-int SyracuseSP (int n)
-{ return 0 ; }
+// La sous procédure pour la fonction itérative : Ajout d'une variable res en passage par adresse pour pouvoir la modifier et la renvoyer par la suite 
+int SP(int n, int Syr, int *res) {
+  if (n == 0)               // Condition d'arret : si j'arrive à 0 je retourne tout ce que j'ai calculé 
+    return Syr; 
+
+  if(Syr % 2 == 0)
+    *res = SP(n - 1, Syr / 2, res) ; // Mettre le résultat dans res en accédant à l'adresse 
+  else 
+    *res = SP(n - 1, 3 * Syr + 1, res) ; 
+  
+  return *res;                // Retourner la valeur contenue à l'adresse de res 
+}
+
+
+// Version récursive terminale avec SP : complexité linéaire O(n)
+int SyracuseSP (int n) {
+   if (n == 0)                 // Cas de base ; Syr(0)
+    return CSyr ; 
+  int res ;                    // Variable pour stocker le résultat 
+  return SP(n, CSyr, &res) ;   // Passer l'adresse de res en argument pour la modifier réellement 
+}
 
 /*************************************************/
 
 // Version récursive ss sous-finctionalités 
-int SyracuseR (int n)
-{ return 0 ; }
+int SyracuseR (int n) { 
+  if (n == 0)
+    return CSyr;            // Cas de base (Syr(0) = 2025)
+
+  int pred = SyracuseR(n - 1) ; // Se rappeler du terme qu'on calcule 
+  if (pred % 2 == 0)            // Faire des tets dessus et renvoyer la valeur 
+    return pred / 2 ; 
+  return 3 * pred + 1 ;         // Cette version est la meilleure que j'ai trouvée car complexité linéaire O(n) contrairement à la naive ou on fait 3 appels récursifs pour tester et retourner qq chose
+}
 
 /*************************************************/
 
@@ -744,7 +793,7 @@ if (true) {
 
 }
 
-if (false) {
+if (true) {
             printf("Valeurs de Y, selon float, double, longdouble :\n") ;
             afficheYfloat(30) ;
             afficheYdouble(30) ;
@@ -755,7 +804,7 @@ if (false) {
 
 /******************************* Permutations **************************/
 
-if (false)
+if (true)
 
 { printf("dim des permutations ? : \n") ;
    int dim = Int_Lire() ;
@@ -798,7 +847,7 @@ if (false)
 
 
 
-if (false) {   // Test de toutes les versions
+if (true) {   // Test de toutes les versions
 
     for(int v=1 ; v<=VersionsSyracuse ; v++)  // numéro de version
         {
