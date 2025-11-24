@@ -198,12 +198,13 @@ long double Elongdouble () {
     terme = terme / i ;    // Calcul du terme que je veux ajouter
     
     if (e + terme == e) 
-      return e;          // je retourne e si l'ajout du terme ne change rien   
+      return e ;          // je retourne e si l'ajout du terme ne change rien   
     else {
-      e = e + terme;       // sinon je continue à sommer
-      i = i + 1; 
+      e = e + terme ;       // sinon je continue à sommer
+      i = i + 1 ; 
     }
   }
+  return e ; // jamais atteint mais par sécurité 
 } 
 
 
@@ -510,7 +511,7 @@ int* P_random (int n)
 /*************************************************/
 
 /***************************/
-/*****Procédure recursif*****/
+/* version Regi 
 int procedure_Syracuse_pair(int n) {
   printf("%d ", n);
   if (n == 1) return CSyr;
@@ -555,13 +556,9 @@ int syracuse_aux(int n, int acc) {
   return syracuse_aux(3 * n + 1, acc);
 }
 
-/*************************************************/
-
 int SyracuseSF (int n) {
   return syracuse_aux(n,CSyr) ;
 }
-
-/*************************************************/
 
 int SyracuseSP (int n) {
   if (n==0)
@@ -570,8 +567,6 @@ int SyracuseSP (int n) {
     return procedure_Syracuse_pair(n);
   return procedure_Syracuse_impair(n);
 }
-
-/*************************************************/
 
 int SyracuseR (int n)
 {  printf("%d ", n);
@@ -582,8 +577,35 @@ int SyracuseR (int n)
   if (n % 2 == 0)
     return SyracuseR(n / 2);
   return SyracuseR(3 * n + 1);
-}
+}*/
 
+
+/* Version Farah */
+
+// Version itérative 
+int SyracuseI (int n) { 
+  if (n == 0) 
+    return CSyr ; 
+  
+}
+  
+/*************************************************/
+
+// Version récursive terminale avec SF
+int SyracuseSF (int n)
+{ return 0 ; }
+
+/*************************************************/
+
+// Version récursive terminale avec SP 
+int SyracuseSP (int n)
+{ return 0 ; }
+
+/*************************************************/
+
+// Version récursive ss sous-finctionalités 
+int SyracuseR (int n)
+{ return 0 ; }
 
 /*************************************************/
 
@@ -643,7 +665,7 @@ int Syracuse (int n, int i)
 
 /************************  taille des nombres  *************************/
 
-if (false) {
+if (true) {
 
 
        printf("tailles des nombres (peuvent varier selon le compilo) :\n") ;
@@ -722,7 +744,7 @@ if (true) {
 
 }
 
-if (true) {
+if (false) {
             printf("Valeurs de Y, selon float, double, longdouble :\n") ;
             afficheYfloat(30) ;
             afficheYdouble(30) ;
