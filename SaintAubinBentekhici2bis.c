@@ -196,7 +196,7 @@ int main() {
     printf("\nTest PPQ(5, 5, 1):\n");
     ListeDeListes test1 = PPQ(2, 4, 9);
     if (test1 == NULL) {
-        printf("Aucune solution trouvée (comportement attendu)\n");
+        printf("Aucune solution trouvee (comportement attendu)\n");
     } else {
         affiche_liste_de_listes(test1);
         libere_liste_de_listes(test1);
@@ -213,7 +213,7 @@ int main() {
     }
     // Test 3: Cas avec de grands nombres
     printf("\nTest PPQ(10, 15, 100):\n");
-    ListeDeListes test3 = PPQ(10, 12, 40); // Cas tester avec comme p2=14 mais prend beaucoup plus de temps et de mémoire
+    ListeDeListes test3 = PPQ(10, 12, 76); // Cas tester avec comme p2=14 mais prend beaucoup plus de temps et de mémoire
     if (test3 == NULL) {
         printf("Aucune solution trouvée\n");
     } else {
@@ -226,7 +226,7 @@ int main() {
     printf("\nTest PPQ(1, 2, 1):\n");
     ListeDeListes test4 = PPQ(1, 2, 1);
     if (test4 == NULL) {
-        printf("Aucune solution trouvée\n");
+        printf("Aucune solution trouvee\n");
     } else {
         affiche_liste_de_listes(test4);
         libere_liste_de_listes(test4);
@@ -236,7 +236,7 @@ int main() {
     printf("\nTest PPQ(4, 2, 6):\n");
     ListeDeListes test5 = PPQ(4, 2, 6);
     if (test5 == NULL) {
-        printf("Aucune solution trouvée (p > q)\n");
+        printf("Aucune solution trouvee (p > q)\n");
     } else {
         affiche_liste_de_listes(test5);
         libere_liste_de_listes(test5);
@@ -276,7 +276,7 @@ int main() {
     printf("\nTest PPQ(7, 7, 7):\n");
     ListeDeListes test9 = PPQ(7, 7, 7);
     if (test9 == NULL) {
-        printf("Aucune solution trouvée\n");
+        printf("Aucune solution trouvee\n");
     } else {
         affiche_liste_de_listes(test9);
         libere_liste_de_listes(test9);
@@ -286,7 +286,7 @@ int main() {
     printf("\nTest PPQ(2, 4, 5):\n");
     ListeDeListes test10 = PPQ(2, 4, 5);
     if (test10 == NULL) {
-        printf("Aucune solution trouvée\n");
+        printf("Aucune solution trouvee\n");
     } else {
         affiche_liste_de_listes(test10);
         libere_liste_de_listes(test10);
