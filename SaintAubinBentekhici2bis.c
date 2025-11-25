@@ -147,7 +147,7 @@ Liste creer_liste_avec_element(int x,Liste sous_liste) {
 // Gestion des cas de base
 ListeDeListes cas_base(int p1,int p2, int q) {
     // Cas de base q==0
-    if (q==0 ||p2<p1) {
+    if (q<=0 ||p2<p1) {
         return ajoute_liste(NULL,LdVide()) ;
     }
     if (q<p1 ) {
@@ -158,6 +158,7 @@ ListeDeListes cas_base(int p1,int p2, int q) {
 }
 
 // FONCTION PPQ PRINCIPALE
+// COMPLEXITE O(2^q)
 ListeDeListes PPQ(int p1, int p2, int q) {
     //Verification cas de base
     ListeDeListes c_b = cas_base(p1,p2,q) ;
@@ -192,8 +193,8 @@ ListeDeListes PPQ(int p1, int p2, int q) {
 int main() {
     printf("=== TESTS AVEC CAS LIMITES ===\n");
 
-    // Test 1: Cas où aucune solution n'est possible
-    printf("\nTest PPQ(5, 5, 1):\n");
+    // Test 1: Exemple de l'énoncé
+    printf("\nTest PPQ(2, 4, 9):\n");
     ListeDeListes test1 = PPQ(2, 4, 9);
     if (test1 == NULL) {
         printf("Aucune solution trouvee (comportement attendu)\n");
@@ -206,13 +207,13 @@ int main() {
     printf("\nTest PPQ(3, 3, 3):\n");
     ListeDeListes test2 = PPQ(3, 3, 3);
     if (test2 == NULL) {
-        printf("Aucune solution trouvée\n");
+        printf("Aucune solution trouvee\n");
     } else {
         affiche_liste_de_listes(test2);
         libere_liste_de_listes(test2);
     }
     // Test 3: Cas avec de grands nombres
-    printf("\nTest PPQ(10, 15, 100):\n");
+    printf("\nTest PPQ(10, 12, 76):\n");
     ListeDeListes test3 = PPQ(10, 12, 76); // Cas tester avec comme p2=14 mais prend beaucoup plus de temps et de mémoire
     if (test3 == NULL) {
         printf("Aucune solution trouvée\n");
