@@ -146,8 +146,8 @@ Liste creer_liste_avec_element(int x,Liste sous_liste) {
 
 // Gestion des cas de base
 ListeDeListes cas_base(int p1,int p2, int q) {
-    // Cas de base q==0
-    if (q<=0 ||p2<p1) {
+    // Cas de base q==0, l'enoncé nous souligne que q ne peut faire partie de la liste aussi
+    if (q<=0 ||p2<p1 || p1==q || p2==q) {
         return ajoute_liste(NULL,LdVide()) ;
     }
     if (q<p1 ) {
