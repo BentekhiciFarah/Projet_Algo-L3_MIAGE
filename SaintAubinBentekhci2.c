@@ -105,7 +105,7 @@ int longueur_rec (Liste l)
 {
     if (l == NULL)
          return 0 ;
-    else return (1 + longueur_rec(l->suite)) ;
+    return (1 + longueur_rec(l->suite)) ;
 }
 
 /*******/
@@ -179,7 +179,7 @@ void VideListe(Liste *L)
 /*          UnPlusDeuxgalTrois              */
 /*                                          */
 /********************************************/
-
+// Complexité O(1)
 bool UnPlusDeuxEgalTrois (Liste L) {
     int v1, v2, v3 ; 
     v1 = v2 = v3 = 0 ; // Initialisation de 3 variables à 0 au cas ou c'est nul ça vaudra 0 pour le calcul de la somme 
@@ -213,10 +213,13 @@ bool PlusCourteRec (Liste L1, Liste L2) {
 }
 
 /*******/
-  
+// ComplexitéO(n)
 bool PlusCourteIter (Liste L1, Liste L2) {
-
-     return true ; 
+     while (L1 != NULL && L2 != NULL) {
+         L1 = L1->suite;
+         L2 = L2->suite;
+     }
+     return (L1 == NULL && L2!=NULL) ;
 }
    
   
@@ -277,13 +280,27 @@ int NTAZ_It (Liste L) {
 
 /*******/
 
-int NTAZ_Rec (Liste L)
-   { return 0 ; }
+int NTAZ_Rec (Liste L) {
+    if (L!=NULL && L->valeur!=0) {
+        return 1+NTAZ_Rec(L->suite) ;
+    }
+    return 0;
+}
 
 /*******/
+int NTAZ_RTSF_Aux(Liste L, int compteur) {
+    // Cas de base : liste vide, on retourne le compteur accumulé
+    if (L == NULL) {
+        return compteur;
+    }
+    int nouveau_compteur = (L->valeur == 0) ? compteur + 1 : compteur;
 
-int NTAZ_RTSF (Liste L)
-   { return 0 ; }
+    return NTAZ_RTSF_Aux(L->suite, nouveau_compteur);
+}
+
+int NTAZ_RTSF (Liste L) {
+    return NTAZ_RTSF_Aux(L,0) ;
+}
 
 /*******/
 void NTAZ_RTSP_terminal(Liste L, int *compteur) {
@@ -311,7 +328,7 @@ void TuePosRec_aux(Liste *L, int i) {
         return; 
     if((*L)->valeur == i) {
         depile(L); 
-        TuePosRec_aux(L, i++) ; 
+        TuePosRec_aux(L, i++)
     }
     else 
         TuePosRec_aux(&(*L)->suite, i++); 
