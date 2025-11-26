@@ -181,15 +181,19 @@ void VideListe(Liste *L)
 /********************************************/
 
 bool UnPlusDeuxEgalTrois (Liste L) {
-    if (L == NULL)
-        return false;
-    if (L->suite == NULL)
-        return L->valeur == 0 ;
-    if (L->suite->suite == NULL)
-        return L->valeur+L->suite->valeur == 0 ;
-    if ((L->valeur + L->suite->valeur) == L->suite->suite->valeur)
-        return true ;
-    return false ;
+    int v1, v2, v3 ; 
+    v1 = v2 = v3 = 0 ; // Initialisation de 3 variables à 0 au cas ou c'est nul ça vaudra 0 pour le calcul de la somme 
+    if (L != NULL) {       // if imbriqués afin de ne pas essayer d'accéder au bloc suivant si L == NULL (Ce qui engendrerait une seg fault)
+        v1 = L->valeur ;    
+        if (L->suite != NULL) {
+            v2 = L->suite->valeur ;
+
+            if (L->suite->suite != NULL) {
+                v3 = L->suite->suite->valeur ;
+            }
+        }
+    }
+    return (v1 + v2 == v3) ; 
 }
    
 /********************************************/
@@ -199,11 +203,11 @@ bool UnPlusDeuxEgalTrois (Liste L) {
 /********************************************/
 
 bool PlusCourteRec (Liste L1, Liste L2) {
-    if (L1 == NULL && L2 == NULL)
+    if (L1 == NULL && L2 == NULL)   // Tester si les 2 listes sont vides 
         return false; 
-    if (L1 == NULL && L2 != NULL)
+    if (L1 == NULL && L2 != NULL)   // Si la 1 ère est null et pas la 2 ème
         return true; 
-    if (L2 == NULL && L1 != NULL)
+    if (L2 == NULL && L1 != NULL)   // Le contraire 
         return false;
     return PlusCourteRec(L1->suite, L2->suite);  
 }
@@ -307,7 +311,7 @@ void TuePosRec_aux(Liste *L, int i) {
         return; 
     if((*L)->valeur == i) {
         depile(L); 
-        TuePosRec_aux(L, i++)
+        TuePosRec_aux(L, i++) ; 
     }
     else 
         TuePosRec_aux(&(*L)->suite, i++); 
@@ -366,17 +370,18 @@ int main()
         Liste p = NULL ; 
 
         // Test UnPlusDeux
-        if(UnPlusDeuxEgalTrois(l) == true) 
-            printf("Un Plus Deux Egal Trois sur l : true\n") ;
+        if(UnPlusDeuxEgalTrois(n) == true) 
+            printf("Un Plus Deux Egal Trois sur n : true\n") ;
         else
-            printf("Un Plus DeuxEgal Trois sur l : false\n") ;  
+            printf("Un Plus DeuxEgal Trois sur n : false\n") ;  
 
         // Test plus courte 
-        if(PlusCourteRec (l, m) == true)
-            printf("La premiere liste est strictement plus petite que la deuxieme \n");
+        
+        if(PlusCourteRec (m, n) == true)
+            printf("La premiere liste est strictement plus petite que la deuxieme : true \n");
         else  
-            printf("La deuxieme liste est strictement plus petite que la premiere \n"); 
-
+            printf("La premiere liste est strictement plus petite que la deuxieme : false \n"); 
+    
         printf("%d",NTAZ_RTSP(m));
 
         // Test Verifiek0 rec
@@ -395,11 +400,14 @@ int main()
         //test_NTAZ_SP = ajoute(9,test_NTAZ_SP) ;
         //printf("%d\n",NTAZ_RTSP(test_NTAZ_SP));
 
-        free(m) ; 
-        free(l) ; 
+        VideListe(&m) ; 
+        VideListe(&p) ; 
+        VideListe(&l) ; 
+        VideListe(&n) ; 
 
     return 0;
 }
+
 
 
 
