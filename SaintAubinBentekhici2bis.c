@@ -195,9 +195,7 @@ ListeDeListes PPQ(int p1, int p2, int q) {
 
 
 int main() {
-    printf("=== TESTS AVEC CAS LIMITES ===\n");
-
-    printf("\nTest PPQ(5, 5, 1):\n");
+    printf("\nTest PPQ(2, 4, 9):\n");
     ListeDeListes test1 = PPQ(2, 4, 9);
     if (test1 == NULL) {
         printf("Aucune solution trouvee\n");
@@ -205,96 +203,100 @@ int main() {
         affiche_liste_de_listes(test1);
         libere_liste_de_listes(test1);
     }
+    if (false){
+        printf("=== TESTS AVEC CAS LIMITES ===\n");
 
-    // Test 2: Cas où p = q (doit retourner une seule liste avec juste p)
-    printf("\nTest PPQ(3, 3, 3):\n");
-    ListeDeListes test2 = PPQ(3, 3, 3);
-    if (test2 == NULL) {
-        printf("Aucune solution trouvée\n");
-    } else {
-        affiche_liste_de_listes(test2);
-        libere_liste_de_listes(test2);
+
+        // Test 2: Cas où p = q (doit retourner une seule liste avec juste p)
+        printf("\nTest PPQ(3, 3, 3):\n");
+        ListeDeListes test2 = PPQ(3, 3, 3);
+        if (test2 == NULL) {
+            printf("Aucune solution trouvée\n");
+        } else {
+            affiche_liste_de_listes(test2);
+            libere_liste_de_listes(test2);
+        }
+        // Test 3: Cas avec de grands nombres
+        printf("\nTest PPQ(10, 15, 100):\n");
+        ListeDeListes test3 = PPQ(10, 15, 78); // Cas tester avec comme p2=14 mais prend beaucoup plus de temps et de mémoire
+        if (test3 == NULL) {
+            printf("Aucune solution trouvée\n");
+        } else {
+            affiche_liste_de_listes(test3);
+            libere_liste_de_listes(test3);
+        }
+
+
+        // Test 4: Cas où n est très petit
+        printf("\nTest PPQ(1, 2, 1):\n");
+        ListeDeListes test4 = PPQ(1, 2, 1);
+        if (test4 == NULL) {
+            printf("Aucune solution trouvee\n");
+        } else {
+            affiche_liste_de_listes(test4);
+            libere_liste_de_listes(test4);
+        }
+
+        // Test 5: Cas où p > q
+        printf("\nTest PPQ(4, 2, 6):\n");
+        ListeDeListes test5 = PPQ(4, 2, 6);
+        if (test5 == NULL) {
+            printf("Aucune solution trouvee (p > q)\n");
+        } else {
+            affiche_liste_de_listes(test5);
+            libere_liste_de_listes(test5);
+        }
+
+        // Test 6: Cas avec n = 0 (doit retourner liste vide)
+        printf("\nTest PPQ(1, 3, 0):\n");
+        ListeDeListes test6 = PPQ(1, 3, 0);
+        if (test6 == NULL) {
+            printf("Aucune solution trouvée\n");
+        } else {
+            affiche_liste_de_listes(test6);
+            libere_liste_de_listes(test6);
+        }
+
+        // Test 7: Cas où n est négatif
+        printf("\nTest PPQ(1, 3, -5):\n");
+        ListeDeListes test7 = PPQ(1, 3, -5);
+        if (test7 == NULL) {
+            printf("Aucune solution trouvée (n négatif)\n");
+        } else {
+            affiche_liste_de_listes(test7);
+            libere_liste_de_listes(test7);
+        }
+
+        // Test 8: Cas avec p = 1 (tous les nombres sont possibles)
+        printf("\nTest PPQ(1, 5, 7):\n");
+        ListeDeListes test8 = PPQ(1, 5, 7);
+        if (test8 == NULL) {
+            printf("Aucune solution trouvée\n");
+        } else {
+            affiche_liste_de_listes(test8);
+            libere_liste_de_listes(test8);
+        }
+
+        // Test 9: Cas où la seule solution est une liste à un élément
+        printf("\nTest PPQ(7, 7, 7):\n");
+        ListeDeListes test9 = PPQ(7, 7, 7);
+        if (test9 == NULL) {
+            printf("Aucune solution trouvee\n");
+        } else {
+            affiche_liste_de_listes(test9);
+            libere_liste_de_listes(test9);
+        }
+
+        // Test 10: Cas avec plusieurs solutions possibles
+        printf("\nTest PPQ(2, 4, 5):\n");
+        ListeDeListes test10 = PPQ(2, 4, 5);
+        if (test10 == NULL) {
+            printf("Aucune solution trouvee\n");
+        } else {
+            affiche_liste_de_listes(test10);
+            libere_liste_de_listes(test10);
+        }
+
+        return 0;
     }
-    // Test 3: Cas avec de grands nombres
-    printf("\nTest PPQ(10, 15, 100):\n");
-    ListeDeListes test3 = PPQ(10, 15, 78); // Cas tester avec comme p2=14 mais prend beaucoup plus de temps et de mémoire
-    if (test3 == NULL) {
-        printf("Aucune solution trouvée\n");
-    } else {
-        affiche_liste_de_listes(test3);
-        libere_liste_de_listes(test3);
-    }
-
-
-    // Test 4: Cas où n est très petit
-    printf("\nTest PPQ(1, 2, 1):\n");
-    ListeDeListes test4 = PPQ(1, 2, 1);
-    if (test4 == NULL) {
-        printf("Aucune solution trouvee\n");
-    } else {
-        affiche_liste_de_listes(test4);
-        libere_liste_de_listes(test4);
-    }
-
-    // Test 5: Cas où p > q
-    printf("\nTest PPQ(4, 2, 6):\n");
-    ListeDeListes test5 = PPQ(4, 2, 6);
-    if (test5 == NULL) {
-        printf("Aucune solution trouvee (p > q)\n");
-    } else {
-        affiche_liste_de_listes(test5);
-        libere_liste_de_listes(test5);
-    }
-
-    // Test 6: Cas avec n = 0 (doit retourner liste vide)
-    printf("\nTest PPQ(1, 3, 0):\n");
-    ListeDeListes test6 = PPQ(1, 3, 0);
-    if (test6 == NULL) {
-        printf("Aucune solution trouvée\n");
-    } else {
-        affiche_liste_de_listes(test6);
-        libere_liste_de_listes(test6);
-    }
-
-    // Test 7: Cas où n est négatif
-    printf("\nTest PPQ(1, 3, -5):\n");
-    ListeDeListes test7 = PPQ(1, 3, -5);
-    if (test7 == NULL) {
-        printf("Aucune solution trouvée (n négatif)\n");
-    } else {
-        affiche_liste_de_listes(test7);
-        libere_liste_de_listes(test7);
-    }
-
-    // Test 8: Cas avec p = 1 (tous les nombres sont possibles)
-    printf("\nTest PPQ(1, 5, 7):\n");
-    ListeDeListes test8 = PPQ(1, 5, 7);
-    if (test8 == NULL) {
-        printf("Aucune solution trouvée\n");
-    } else {
-        affiche_liste_de_listes(test8);
-        libere_liste_de_listes(test8);
-    }
-
-    // Test 9: Cas où la seule solution est une liste à un élément
-    printf("\nTest PPQ(7, 7, 7):\n");
-    ListeDeListes test9 = PPQ(7, 7, 7);
-    if (test9 == NULL) {
-        printf("Aucune solution trouvee\n");
-    } else {
-        affiche_liste_de_listes(test9);
-        libere_liste_de_listes(test9);
-    }
-
-    // Test 10: Cas avec plusieurs solutions possibles
-    printf("\nTest PPQ(2, 4, 5):\n");
-    ListeDeListes test10 = PPQ(2, 4, 5);
-    if (test10 == NULL) {
-        printf("Aucune solution trouvee\n");
-    } else {
-        affiche_liste_de_listes(test10);
-        libere_liste_de_listes(test10);
-    }
-
-    return 0;
 }
