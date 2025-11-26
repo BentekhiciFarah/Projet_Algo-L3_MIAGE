@@ -105,7 +105,7 @@ int longueur_rec (Liste l)
 {
     if (l == NULL)
          return 0 ;
-    else return (1 + longueur_rec(l->suite)) ;
+    return (1 + longueur_rec(l->suite)) ;
 }
 
 /*******/
@@ -179,7 +179,7 @@ void VideListe(Liste *L)
 /*          UnPlusDeuxgalTrois              */
 /*                                          */
 /********************************************/
-
+// Complexité O(1)
 bool UnPlusDeuxEgalTrois (Liste L) {
     if (L == NULL)
         return false;
@@ -209,10 +209,13 @@ bool PlusCourteRec (Liste L1, Liste L2) {
 }
 
 /*******/
-  
+// ComplexitéO(n)
 bool PlusCourteIter (Liste L1, Liste L2) {
-
-     return true ; 
+     while (L1 != NULL && L2 != NULL) {
+         L1 = L1->suite;
+         L2 = L2->suite;
+     }
+     return (L1 == NULL && L2!=NULL) ;
 }
    
   
@@ -307,7 +310,7 @@ void TuePosRec_aux(Liste *L, int i) {
         return; 
     if((*L)->valeur == i) {
         depile(L); 
-        TuePosRec_aux(L, i++)
+        TuePosRec_aux(L, i++) ;
     }
     else 
         TuePosRec_aux(&(*L)->suite, i++); 
