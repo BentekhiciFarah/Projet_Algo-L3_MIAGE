@@ -202,7 +202,7 @@ bool UnPlusDeuxEgalTrois (Liste L) {
 /*                                          */
 /********************************************/
 
-bool PlusCourteRec (Liste L1, Liste L2) {
+bool PlusCourteRec (Liste L1, Liste L2) { // Complexité O(n)
     if (L1 == NULL && L2 == NULL)   // Tester si les 2 listes sont vides 
         return false; 
     if (L1 == NULL && L2 != NULL)   // Si la 1 ère est null et pas la 2 ème
@@ -213,7 +213,7 @@ bool PlusCourteRec (Liste L1, Liste L2) {
 }
 
 /*******/
-// ComplexitéO(n)
+// Complexité O(n)
 bool PlusCourteIter (Liste L1, Liste L2) {
      while (L1 != NULL && L2 != NULL) {
          L1 = L1->suite;
@@ -230,32 +230,31 @@ bool PlusCourteIter (Liste L1, Liste L2) {
 /********************************************/
 
 bool VerifiekORec (Liste L, int k) {
-    if (L==NULL && k==0)
-        return true;
-    if (L==NULL && k != 0)
-        return false;
-    if (L->valeur == 0 && k>0) {
+    if (k < 0) // le k ne peut etre négatif 
+        return false ;
+    if (L==NULL)    // Si L est null, faut absolument que k = 0 (0 occurence de 0 dans L = NULL)
+        return (k == 0) ; 
+    if (L->valeur == 0) {
         return VerifiekORec(L->suite, k-1) ;
     }
-    return VerifiekORec(L->suite, k);
+    return VerifiekORec(L->suite, k) ;
 
 }
    
 /*******/
 
 bool VerifiekOIter (Liste L, int k) {
-    if (L==NULL && k==0)
-        return true ;
-    if (L==NULL && k>0)
-        return false ;
-    Liste L_aux=L ;
-    while (L_aux!=NULL && k>0) {
-        if (L_aux->valeur == 0) {
-            k=k-1 ;
-        }
-        L_aux = L_aux->suite ;
+    if (k < 0)
+        return false ; 
+    if (L == NULL)
+        return (k == 0) ; 
+    Liste P = L ; 
+    while (P != NULL && k != 0) { // Complexité O(n)
+        if(P->valeur == 0)
+            k = k -1 ; 
+        P = P->suite ; 
     }
-    return L==NULL && k==0 ;
+    return (k == 0) ; 
 }
    
 
@@ -327,11 +326,11 @@ void TuePosRec_aux(Liste *L, int i) {
     if(*L == NULL)
         return; 
     if((*L)->valeur == i) {
-        depile(L); 
-        TuePosRec_aux(L, i++)
+        depile(L) ; 
+        TuePosRec_aux(L, i++) ; 
     }
     else 
-        TuePosRec_aux(&(*L)->suite, i++); 
+        TuePosRec_aux(&(*L)->suite, i++) ; 
 }
 
 void TuePosRec (Liste * L) { // * L car on veut modifier le contenu 
@@ -367,7 +366,7 @@ int main()
     Liste l ;
         // Initialisation liste l :
         l = NULL ; 
-        l = ajoute(5, l) ; 
+        l = ajoute(0, l) ; 
         l = ajoute(3, l) ; 
         l = ajoute(2, l) ;
         printf("La liste l : ") ; 
@@ -392,23 +391,30 @@ int main()
         else
             printf("Un Plus DeuxEgal Trois sur n : false\n") ;  
 
-        // Test plus courte 
-        
+        // Test PluscourteRec
         if(PlusCourteRec (m, n) == true)
-            printf("La premiere liste est strictement plus petite que la deuxieme : true \n");
+            printf("La premiere liste est strictement plus petite que la deuxieme (Rec) : true \n");
         else  
-            printf("La premiere liste est strictement plus petite que la deuxieme : false \n"); 
-    
-        printf("%d",NTAZ_RTSP(m));
+            printf("La premiere liste est strictement plus petite que la deuxieme (Rec) : false \n"); 
+
+        // Test PlusCourteIter 
+        if(PlusCourteIter (p, n) == true)
+            printf("La premiere liste est strictement plus petite que la deuxieme (Iter) : true \n");
+        else  
+            printf("La premiere liste est strictement plus petite que la deuxieme (Iter) : false \n"); 
+        
+        
+
+        // printf("%d",NTAZ_RTSP(m));
 
         // Test Verifiek0 rec
-        if(VerifiekORec(l,2) == true)
+        if(VerifiekORec(n,0) == true)
             printf("VerifiekORec : true\n");
-        else  
+        else 
             printf("VerifiekORec :false\n");
 
         // Test Verifk0 iter  
-        if(VerifiekOIter(l,2) == true)
+        if(VerifiekOIter(m,0) == true)
             printf("VerifiekOIter : true\n");
         else  
             printf("VerifiekOIter :false\n");
