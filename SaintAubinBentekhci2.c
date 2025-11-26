@@ -244,12 +244,12 @@ bool VerifiekORec (Liste L, int k) {
 /*******/
 
 bool VerifiekOIter (Liste L, int k) {
-    if (k < 0)
+    if (k < 0)                  // k jamais négatif 
         return false ; 
-    if (L == NULL)
-        return (k == 0) ; 
-    Liste P = L ; 
-    while (P != NULL && k != 0) { // Complexité O(n)
+    if (L == NULL)  
+        return (k == 0) ;       // Si L == NULL forcément k = 0
+    Liste P = L ;               // Liste brouillon P 
+    while (P != NULL && k > 0) { // Complexité O(n)
         if(P->valeur == 0)
             k = k -1 ; 
         P = P->suite ; 
@@ -266,24 +266,24 @@ bool VerifiekOIter (Liste L, int k) {
 
 int NTAZ_It (Liste L) {
     if (L==NULL)
-        return 0 ;
-    Liste copie=L;
-    int compteur=0;
-    while (copie !=NULL && copie->valeur!=0) {
-        compteur+=1 ;
-        copie=copie->suite ;
+        return 0 ; // 0 pour la liste nulle car pas de termes 
+    Liste P = L ;   // Liste brouillon 
+    int compteur = 0 ;
+    while (P !=NULL && P->valeur != 0) {        // tant que le terme n vaut pas 0 et la liste est pas encore vide, on continue 
+        compteur = compteur + 1 ;               // compte la length de la liste avant de rencontrer le premier 0    
+        P = P->suite ;
     }
-    return compteur ;
+    return compteur ;                           // Retourner la taille trouvée 
 
 }
 
 /*******/
 
 int NTAZ_Rec (Liste L) {
-    if (L!=NULL && L->valeur!=0) {
-        return 1+NTAZ_Rec(L->suite) ;
+    if (L != NULL && L->valeur != 0) {  
+        return 1 + NTAZ_Rec(L->suite) ;     // On incrémente et on passe à la suite tant que L est non vide et pas encore rencontré de 0
     }
-    return 0;
+    return 0;       // Cas de base 
 }
 
 /*******/
@@ -298,7 +298,7 @@ int NTAZ_RTSF_Aux(Liste L, int compteur) {
 }
 
 int NTAZ_RTSF (Liste L) {
-    return NTAZ_RTSF_Aux(L,0) ;
+    return NTAZ_RTSF_Aux(L,0) ; // Utiliser un accumulateur 
 }
 
 /*******/
@@ -402,10 +402,6 @@ int main()
             printf("La premiere liste est strictement plus petite que la deuxieme (Iter) : true \n");
         else  
             printf("La premiere liste est strictement plus petite que la deuxieme (Iter) : false \n"); 
-        
-        
-
-        // printf("%d",NTAZ_RTSP(m));
 
         // Test Verifiek0 rec
         if(VerifiekORec(n,0) == true)
@@ -419,9 +415,13 @@ int main()
         else  
             printf("VerifiekOIter :false\n");
 
-        //Liste test_NTAZ_SP = NULL ;
-        //test_NTAZ_SP = ajoute(9,test_NTAZ_SP) ;
-        //printf("%d\n",NTAZ_RTSP(test_NTAZ_SP));
+        // Test NTAZ : 
+            // Version itérative : 
+        printf("Le nbr de termes avant le premier 0 (Iter) est de : %d\n", NTAZ_It (n)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec) est de : %d\n", NTAZ_Rec (m)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec) est de : %d\n", NTAZ_Rec (m)) ; 
+
+
 
         VideListe(&m) ; 
         VideListe(&p) ; 
