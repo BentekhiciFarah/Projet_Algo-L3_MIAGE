@@ -276,13 +276,27 @@ int NTAZ_It (Liste L) {
 
 /*******/
 
-int NTAZ_Rec (Liste L)
-   { return 0 ; }
+int NTAZ_Rec (Liste L) {
+    if (L!=NULL && L->valeur!=0) {
+        return 1+NTAZ_Rec(L->suite) ;
+    }
+    return 0;
+}
 
 /*******/
+int NTAZ_RTSF_Aux(Liste L, int compteur) {
+    // Cas de base : liste vide, on retourne le compteur accumulé
+    if (L == NULL) {
+        return compteur;
+    }
+    int nouveau_compteur = (L->valeur == 0) ? compteur + 1 : compteur;
 
-int NTAZ_RTSF (Liste L)
-   { return 0 ; }
+    return NTAZ_RTSF_Aux(L->suite, nouveau_compteur);
+}
+
+int NTAZ_RTSF (Liste L) {
+    return NTAZ_RTSF_Aux(L,0) ;
+}
 
 /*******/
 void NTAZ_RTSP_terminal(Liste L, int *compteur) {
