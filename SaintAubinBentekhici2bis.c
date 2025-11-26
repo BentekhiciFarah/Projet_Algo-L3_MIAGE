@@ -34,7 +34,7 @@ typedef Bloc *Liste ;
 /*************************************************/
 
 Liste ajoute(int x, Liste l)
-{   Liste tmp = (Liste) malloc(sizeof(Bloc)) ;
+{   Liste tmp = malloc(sizeof(Bloc)) ;
     tmp->valeur = x ;
     tmp->suite = l ;
     return tmp ;
@@ -150,10 +150,6 @@ ListeDeListes cas_base(int p1,int p2, int q) {
     if (q==0 ||p2<p1 ) {
         return ajoute_liste(NULL,LdVide()) ;
     }
-    if (p1 == q) {
-        return LdVide();
-    }
-
     if (q<p1) {
         return LdVide() ;
     }
@@ -203,7 +199,7 @@ int main() {
         affiche_liste_de_listes(test1);
         libere_liste_de_listes(test1);
     }
-    if (false){
+    if (true){
         printf("=== TESTS AVEC CAS LIMITES ===\n");
 
 
@@ -251,7 +247,7 @@ int main() {
         printf("\nTest PPQ(1, 3, 0):\n");
         ListeDeListes test6 = PPQ(1, 3, 0);
         if (test6 == NULL) {
-            printf("Aucune solution trouvée\n");
+            printf("Aucune solution trouve\n");
         } else {
             affiche_liste_de_listes(test6);
             libere_liste_de_listes(test6);
@@ -261,7 +257,7 @@ int main() {
         printf("\nTest PPQ(1, 3, -5):\n");
         ListeDeListes test7 = PPQ(1, 3, -5);
         if (test7 == NULL) {
-            printf("Aucune solution trouvée (n négatif)\n");
+            printf("Aucune solution trouvee (n negatif)\n");
         } else {
             affiche_liste_de_listes(test7);
             libere_liste_de_listes(test7);
