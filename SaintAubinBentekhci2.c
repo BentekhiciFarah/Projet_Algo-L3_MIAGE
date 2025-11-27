@@ -263,7 +263,7 @@ bool VerifiekOIter (Liste L, int k) {
 /*     NombreTermesAvantZero                */
 /*                                          */
 /********************************************/
-
+// Version terminale 
 int NTAZ_It (Liste L) {
     if (L==NULL)
         return 0 ; // 0 pour la liste nulle car pas de termes 
@@ -278,7 +278,7 @@ int NTAZ_It (Liste L) {
 }
 
 /*******/
-
+// Version récursive ss sous fonctionnalité et non terminale : 
 int NTAZ_Rec (Liste L) {
     if (L != NULL && L->valeur != 0) {  
         return 1 + NTAZ_Rec(L->suite) ;     // On incrémente et on passe à la suite tant que L est non vide et pas encore rencontré de 0
@@ -287,32 +287,36 @@ int NTAZ_Rec (Liste L) {
 }
 
 /*******/
+// Version récursive terminale avec sous-fonction et compteur in
+
+// La sous-fonction : 
 int NTAZ_RTSF_Aux(Liste L, int compteur) {
     // Cas de base : liste vide, on retourne le compteur accumulé
     if (L == NULL) {
         return compteur;
     }
-    int nouveau_compteur = (L->valeur == 0) ? compteur + 1 : compteur;
-
-    return NTAZ_RTSF_Aux(L->suite, nouveau_compteur);
+    if (L->valeur == 0)
+        return compteur ; 
+    return NTAZ_RTSF_Aux(L->suite, compteur + 1);   // Lancer sur la suite avec le nouvel accumulateur
 }
-
+// Recursive terminale : 
 int NTAZ_RTSF (Liste L) {
-    return NTAZ_RTSF_Aux(L,0) ; // Utiliser un accumulateur 
+    return NTAZ_RTSF_Aux(L, 0) ; // Utiliser un accumulateur 
 }
 
 /*******/
+// Version récursive terminale avec sous-procédure er in compteur inout 
 void NTAZ_RTSP_terminal(Liste L, int *compteur) {
     if (L == NULL || L->valeur == 0)
-        return;
+        return ;    //je renvoie la valeur du compteur si j'arrive à la fin ou je rencontre le premier 0
     else {
-        (*compteur)++; // compteur
-        NTAZ_RTSP_terminal(L->suite, compteur);
+        (*compteur)++; // compteur  // Comme il est en inout, je peux modifier sa valeur directement 
+        NTAZ_RTSP_terminal(L->suite, compteur);     // Je lance sur la suite après avoir incrémenté le compteur 
     }
 }
 int NTAZ_RTSP (Liste L) {
-    int compteur =0 ;
-    NTAZ_RTSP_terminal(L, &compteur);
+    int compteur = 0 ;
+    NTAZ_RTSP_terminal(L, &compteur); // compteur en inout 
     return compteur ;
 }
 
@@ -324,25 +328,38 @@ int NTAZ_RTSP (Liste L) {
 /********************************************/
 void TuePosRec_aux(Liste *L, int i) {
     if(*L == NULL)
-        return; 
+        return ; 
     if((*L)->valeur == i) {
         depile(L) ; 
-        TuePosRec_aux(L, i++) ; 
+        TuePosRec_aux(L, i) ; // Comme j'ai dépilé, le bloc a disparu et a été libéré donc j'incrémente rien
     }
     else 
-        TuePosRec_aux(&(*L)->suite, i++) ; 
+        TuePosRec_aux(&(*L)->suite, i +1) ; // Si je ne dépile pas, j'avance dans ma liste en incrémentant
 }
 
 void TuePosRec (Liste * L) { // * L car on veut modifier le contenu 
     if (* L == NULL)
-        return; 
-    TuePosRec_aux(L, 1); 
+        return ; 
+    TuePosRec_aux(L, 1); // Je lance avec 1 car d'après l'exemple, on prend pas en compte l'indice 0
 }
 
 
 /*******/
-
-void TuePosIt (Liste * L) {}
+// La version itérative 
+void TuePosIt (Liste * L) {
+    if(*L == NULL)
+        return ; 
+    int i = 1 ; 
+    Liste * P = L ; // Vigilence ? utiliser P ou pas ? 
+    while (*P != NULL) {
+        if ((*P)->valeur == i) 
+            depile(P); 
+        else {
+            P = &(*P)->suite ; 
+        }
+        i ++ ; 
+    }
+}
 
 /********************************************/
 /*                                          */
@@ -350,7 +367,13 @@ void TuePosIt (Liste * L) {}
 /*                                          */
 /********************************************/
 
-void TueRetroPos (Liste * L) {}
+
+
+
+
+void TueRetroPos (Liste * L) {
+    TueRetroPos_aux(L); // Utilisation d'une fonction auxiliaire pour faire de la récursion terminale
+}
 
 /*************************************************/
 /*                                               */
@@ -415,12 +438,20 @@ int main()
         else  
             printf("VerifiekOIter :false\n");
 
-        // Test NTAZ : 
-            // Version itérative : 
+        // Test NTAZ :  
         printf("Le nbr de termes avant le premier 0 (Iter) est de : %d\n", NTAZ_It (n)) ; 
         printf("Le nbr de termes avant le premier 0 (Rec) est de : %d\n", NTAZ_Rec (m)) ; 
-        printf("Le nbr de termes avant le premier 0 (Rec) est de : %d\n", NTAZ_Rec (m)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec_ss_fct) est de : %d\n", NTAZ_RTSF (l)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec_ss_proc) est de : %d\n", NTAZ_RTSP (n)) ; 
 
+        // Test Tue pos 
+        TuePosRec(&n) ; 
+        printf("La nouvelle liste (rec) est : \n") ; 
+        affiche_rec(n) ; 
+
+        TuePosIt(&l) ; 
+        printf("La nouvelle liste (Iter) est : \n") ; 
+        affiche_rec(l) ; 
 
 
         VideListe(&m) ; 
