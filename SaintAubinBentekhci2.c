@@ -365,6 +365,7 @@ void TuePosIt (Liste * L) {
 /*            TueRetroPos                   */
 /*                                          */
 /********************************************/
+// Fonction auxiliaire de complexité O(n)
 void TueRetroPos_aux(Liste * L, int *i) {
     if (*L == NULL)
         return ;  
@@ -374,9 +375,6 @@ void TueRetroPos_aux(Liste * L, int *i) {
         depile(L) ;     
     *i = *i + 1 ;           // J'incrémente i à chaque remntée 
 }
-
-
-
 
 void TueRetroPos (Liste * L) {
     if (L == NULL)
