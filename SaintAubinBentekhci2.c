@@ -306,18 +306,17 @@ int NTAZ_RTSF (Liste L) {
 
 /*******/
 // Version récursive terminale avec sous-procédure er in compteur inout 
-void NTAZ_RTSP_terminal(Liste L, int *compteur) {
+int NTAZ_RTSP_terminal(Liste L, int *compteur) {
     if (L == NULL || L->valeur == 0)
-        return ;    //je renvoie la valeur du compteur si j'arrive à la fin ou je rencontre le premier 0
+        return *compteur ;    //je renvoie la valeur du compteur si j'arrive à la fin ou je rencontre le premier 0
     else {
         (*compteur)++; // compteur  // Comme il est en inout, je peux modifier sa valeur directement 
-        NTAZ_RTSP_terminal(L->suite, compteur);     // Je lance sur la suite après avoir incrémenté le compteur 
+        return NTAZ_RTSP_terminal(L->suite, compteur);     // Je lance sur la suite après avoir incrémenté le compteur 
     }
 }
 int NTAZ_RTSP (Liste L) {
     int compteur = 0 ;
-    NTAZ_RTSP_terminal(L, &compteur); // compteur en inout 
-    return compteur ;
+    return NTAZ_RTSP_terminal(L, &compteur); // compteur en inout et récursion terminale
 }
 
 
@@ -334,7 +333,7 @@ void TuePosRec_aux(Liste *L, int i) {
         TuePosRec_aux(L, i) ; // Comme j'ai dépilé, le bloc a disparu et a été libéré donc j'incrémente rien
     }
     else 
-        TuePosRec_aux(&(*L)->suite, i +1) ; // Si je ne dépile pas, j'avance dans ma liste en incrémentant
+        TuePosRec_aux(&(*L)->suite, i + 1) ; // Si je ne dépile pas, j'avance dans ma liste en incrémentant
 }
 
 void TuePosRec (Liste * L) { // * L car on veut modifier le contenu 
@@ -366,13 +365,24 @@ void TuePosIt (Liste * L) {
 /*            TueRetroPos                   */
 /*                                          */
 /********************************************/
+void TueRetroPos_aux(Liste * L, int *i) {
+    if (*L == NULL)
+        return ;  
+    TueRetroPos_aux(&(*L)->suite, i) ; // Descendre jusqu'à la fin de la liste
 
+    if ((*L)->valeur == *i) // Si la valeur = indice je supp
+        depile(L) ;     
+    *i = *i + 1 ;           // J'incrémente i à chaque remntée 
+}
 
 
 
 
 void TueRetroPos (Liste * L) {
-    TueRetroPos_aux(L); // Utilisation d'une fonction auxiliaire pour faire de la récursion terminale
+    if (L == NULL)
+        return ; 
+    int i = 1 ; 
+    TueRetroPos_aux(L, &i) ; 
 }
 
 /*************************************************/
@@ -397,9 +407,9 @@ int main()
         
         // Initialisation liste m :
         Liste m = NULL; 
-        m = ajoute(5, m) ; 
+        m = ajoute(1, m) ; 
         m = ajoute(3, m) ; 
-        m = ajoute(2, m) ; 
+        m = ajoute(3, m) ; 
         m = ajoute(4, m) ; 
         printf("La liste m : ") ; 
         affiche_rec(m) ;
@@ -442,7 +452,7 @@ int main()
         printf("Le nbr de termes avant le premier 0 (Iter) est de : %d\n", NTAZ_It (n)) ; 
         printf("Le nbr de termes avant le premier 0 (Rec) est de : %d\n", NTAZ_Rec (m)) ; 
         printf("Le nbr de termes avant le premier 0 (Rec_ss_fct) est de : %d\n", NTAZ_RTSF (l)) ; 
-        printf("Le nbr de termes avant le premier 0 (Rec_ss_proc) est de : %d\n", NTAZ_RTSP (n)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec_ss_proc) est de : %d\n", NTAZ_RTSP (l)) ; 
 
         // Test Tue pos 
         TuePosRec(&n) ; 
@@ -453,6 +463,10 @@ int main()
         printf("La nouvelle liste (Iter) est : \n") ; 
         affiche_rec(l) ; 
 
+        // Test Tue pos retro 
+        TueRetroPos (&m) ; 
+        printf("La nouvelle liste (retro) est : \n") ; 
+        affiche_rec(m) ; 
 
         VideListe(&m) ; 
         VideListe(&p) ; 
