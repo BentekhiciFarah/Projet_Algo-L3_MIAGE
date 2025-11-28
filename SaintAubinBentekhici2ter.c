@@ -108,3 +108,24 @@ void Sortie(int *x, File *f){ // Placer la valeur retirée dans x (comme il est 
         free(premier) ; 
     }
 }
+
+// Une fonction pour afficher la file (On ne peut plus utiliser afficher liste car le dernier bloc ne pointe plus sur NULL mais sur le premier)
+void affiche_file(File *f) {
+    if (f->dernier == NULL) {
+        printf("[]\n") ; 
+        return ; 
+    }
+    printf("[");
+
+    Bloc * premier = f->dernier->suite ; // Récupérer le premier 
+    Bloc * courant = premier ; 
+
+    printf("%d", courant->valeur) ;  // L'afficher en dehors de la boucle 
+    courant = courant->suite ; 
+
+    while (courant != premier) {
+        printf(", %d", courant->valeur);
+        courant = courant->suite ; 
+    }
+    printf("]");
+}
