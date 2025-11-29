@@ -202,7 +202,7 @@ bool UnPlusDeuxEgalTrois (Liste L) {
 /*                                          */
 /********************************************/
 
-bool PlusCourteRec (Liste L1, Liste L2) {
+bool PlusCourteRec (Liste L1, Liste L2) { // Complexité O(n)
     if (L1 == NULL && L2 == NULL)   // Tester si les 2 listes sont vides 
         return false; 
     if (L1 == NULL && L2 != NULL)   // Si la 1 ère est null et pas la 2 ème
@@ -213,7 +213,7 @@ bool PlusCourteRec (Liste L1, Liste L2) {
 }
 
 /*******/
-// ComplexitéO(n)
+// Complexité O(n)
 bool PlusCourteIter (Liste L1, Liste L2) {
      while (L1 != NULL && L2 != NULL) {
          L1 = L1->suite;
@@ -230,32 +230,31 @@ bool PlusCourteIter (Liste L1, Liste L2) {
 /********************************************/
 
 bool VerifiekORec (Liste L, int k) {
-    if (L==NULL && k==0)
-        return true;
-    if (L==NULL && k != 0)
-        return false;
-    if (L->valeur == 0 && k>0) {
+    if (k < 0) // le k ne peut etre négatif 
+        return false ;
+    if (L==NULL)    // Si L est null, faut absolument que k = 0 (0 occurence de 0 dans L = NULL)
+        return (k == 0) ; 
+    if (L->valeur == 0) {
         return VerifiekORec(L->suite, k-1) ;
     }
-    return VerifiekORec(L->suite, k);
+    return VerifiekORec(L->suite, k) ;
 
 }
    
 /*******/
 
 bool VerifiekOIter (Liste L, int k) {
-    if (L==NULL && k==0)
-        return true ;
-    if (L==NULL && k>0)
-        return false ;
-    Liste L_aux=L ;
-    while (L_aux!=NULL && k>0) {
-        if (L_aux->valeur == 0) {
-            k=k-1 ;
-        }
-        L_aux = L_aux->suite ;
+    if (k < 0)                  // k jamais négatif 
+        return false ; 
+    if (L == NULL)  
+        return (k == 0) ;       // Si L == NULL forcément k = 0
+    Liste P = L ;               // Liste brouillon P 
+    while (P != NULL && k > 0) { // Complexité O(n)
+        if(P->valeur == 0)
+            k = k -1 ; 
+        P = P->suite ; 
     }
-    return L==NULL && k==0 ;
+    return (k == 0) ; 
 }
    
 
@@ -264,57 +263,60 @@ bool VerifiekOIter (Liste L, int k) {
 /*     NombreTermesAvantZero                */
 /*                                          */
 /********************************************/
-
+// Version terminale 
 int NTAZ_It (Liste L) {
     if (L==NULL)
-        return 0 ;
-    Liste copie=L;
-    int compteur=0;
-    while (copie !=NULL && copie->valeur!=0) {
-        compteur+=1 ;
-        copie=copie->suite ;
+        return 0 ; // 0 pour la liste nulle car pas de termes 
+    Liste P = L ;   // Liste brouillon 
+    int compteur = 0 ;
+    while (P !=NULL && P->valeur != 0) {        // tant que le terme n vaut pas 0 et la liste est pas encore vide, on continue 
+        compteur = compteur + 1 ;               // compte la length de la liste avant de rencontrer le premier 0    
+        P = P->suite ;
     }
-    return compteur ;
+    return compteur ;                           // Retourner la taille trouvée 
 
 }
 
 /*******/
-
+// Version récursive ss sous fonctionnalité et non terminale : 
 int NTAZ_Rec (Liste L) {
-    if (L!=NULL && L->valeur!=0) {
-        return 1+NTAZ_Rec(L->suite) ;
+    if (L != NULL && L->valeur != 0) {  
+        return 1 + NTAZ_Rec(L->suite) ;     // On incrémente et on passe à la suite tant que L est non vide et pas encore rencontré de 0
     }
-    return 0;
+    return 0;       // Cas de base 
 }
 
 /*******/
+// Version récursive terminale avec sous-fonction et compteur in
+
+// La sous-fonction : 
 int NTAZ_RTSF_Aux(Liste L, int compteur) {
     // Cas de base : liste vide, on retourne le compteur accumulé
     if (L == NULL) {
         return compteur;
     }
-    int nouveau_compteur = (L->valeur == 0) ? compteur + 1 : compteur;
-
-    return NTAZ_RTSF_Aux(L->suite, nouveau_compteur);
+    if (L->valeur == 0)
+        return compteur ; 
+    return NTAZ_RTSF_Aux(L->suite, compteur + 1);   // Lancer sur la suite avec le nouvel accumulateur
 }
-
+// Recursive terminale : 
 int NTAZ_RTSF (Liste L) {
-    return NTAZ_RTSF_Aux(L,0) ;
+    return NTAZ_RTSF_Aux(L, 0) ; // Utiliser un accumulateur 
 }
 
 /*******/
-void NTAZ_RTSP_terminal(Liste L, int *compteur) {
+// Version récursive terminale avec sous-procédure er in compteur inout 
+int NTAZ_RTSP_terminal(Liste L, int *compteur) {
     if (L == NULL || L->valeur == 0)
-        return;
+        return *compteur ;    //je renvoie la valeur du compteur si j'arrive à la fin ou je rencontre le premier 0
     else {
-        (*compteur)++; // compteur
-        NTAZ_RTSP_terminal(L->suite, compteur);
+        (*compteur)++; // compteur  // Comme il est en inout, je peux modifier sa valeur directement 
+        return NTAZ_RTSP_terminal(L->suite, compteur);     // Je lance sur la suite après avoir incrémenté le compteur 
     }
 }
 int NTAZ_RTSP (Liste L) {
-    int compteur =0 ;
-    NTAZ_RTSP_terminal(L, &compteur);
-    return compteur ;
+    int compteur = 0 ;
+    return NTAZ_RTSP_terminal(L, &compteur); // compteur en inout et récursion terminale
 }
 
 
@@ -325,33 +327,61 @@ int NTAZ_RTSP (Liste L) {
 /********************************************/
 void TuePosRec_aux(Liste *L, int i) {
     if(*L == NULL)
-        return; 
+        return ; 
     if((*L)->valeur == i) {
-        depile(L); 
-        TuePosRec_aux(L, i++)
+        depile(L) ; 
+        TuePosRec_aux(L, i) ; // Comme j'ai dépilé, le bloc a disparu et a été libéré donc j'incrémente rien
     }
     else 
-        TuePosRec_aux(&(*L)->suite, i++); 
+        TuePosRec_aux(&(*L)->suite, i + 1) ; // Si je ne dépile pas, j'avance dans ma liste en incrémentant
 }
 
 void TuePosRec (Liste * L) { // * L car on veut modifier le contenu 
     if (* L == NULL)
-        return; 
-    TuePosRec_aux(L, 1); 
+        return ; 
+    TuePosRec_aux(L, 1); // Je lance avec 1 car d'après l'exemple, on prend pas en compte l'indice 0
 }
 
 
 /*******/
-
-void TuePosIt (Liste * L) {}
+// La version itérative 
+void TuePosIt (Liste * L) {
+    if(*L == NULL)
+        return ; 
+    int i = 1 ; 
+    Liste * P = L ; // Vigilence ? utiliser P ou pas ? 
+    while (*P != NULL) {
+        if ((*P)->valeur == i) 
+            depile(P); 
+        else {
+            P = &(*P)->suite ; 
+        }
+        i ++ ; 
+    }
+}
 
 /********************************************/
 /*                                          */
 /*            TueRetroPos                   */
 /*                                          */
 /********************************************/
+// Fonction auxiliaire de complexité O(n)
+void TueRetroPos_aux(Liste * L, int *i) {
+    if (*L == NULL)
+        return ;  
+    TueRetroPos_aux(&(*L)->suite, i) ; // Descendre jusqu'à la fin de la liste
 
-void TueRetroPos (Liste * L) {}
+    if ((*L)->valeur == *i) // Si la valeur = indice je supp
+        depile(L) ;     
+    *i = *i + 1 ;           // J'incrémente i à chaque remntée 
+}
+
+void TueRetroPos (Liste * L) {
+    if (L == NULL)
+        return ; 
+    int i = 1 ; 
+    TueRetroPos_aux(L, &i) ; 
+}
 
 /*************************************************/
 /*                                               */
@@ -367,7 +397,7 @@ int main()
     Liste l ;
         // Initialisation liste l :
         l = NULL ; 
-        l = ajoute(5, l) ; 
+        l = ajoute(0, l) ; 
         l = ajoute(3, l) ; 
         l = ajoute(2, l) ;
         printf("La liste l : ") ; 
@@ -375,9 +405,9 @@ int main()
         
         // Initialisation liste m :
         Liste m = NULL; 
-        m = ajoute(5, m) ; 
+        m = ajoute(1, m) ; 
         m = ajoute(3, m) ; 
-        m = ajoute(2, m) ; 
+        m = ajoute(3, m) ; 
         m = ajoute(4, m) ; 
         printf("La liste m : ") ; 
         affiche_rec(m) ;
@@ -392,30 +422,49 @@ int main()
         else
             printf("Un Plus DeuxEgal Trois sur n : false\n") ;  
 
-        // Test plus courte 
-        
+        // Test PluscourteRec
         if(PlusCourteRec (m, n) == true)
-            printf("La premiere liste est strictement plus petite que la deuxieme : true \n");
+            printf("La premiere liste est strictement plus petite que la deuxieme (Rec) : true \n");
         else  
-            printf("La premiere liste est strictement plus petite que la deuxieme : false \n"); 
-    
-        printf("%d",NTAZ_RTSP(m));
+            printf("La premiere liste est strictement plus petite que la deuxieme (Rec) : false \n"); 
+
+        // Test PlusCourteIter 
+        if(PlusCourteIter (p, n) == true)
+            printf("La premiere liste est strictement plus petite que la deuxieme (Iter) : true \n");
+        else  
+            printf("La premiere liste est strictement plus petite que la deuxieme (Iter) : false \n"); 
 
         // Test Verifiek0 rec
-        if(VerifiekORec(l,2) == true)
+        if(VerifiekORec(n,0) == true)
             printf("VerifiekORec : true\n");
-        else  
+        else 
             printf("VerifiekORec :false\n");
 
         // Test Verifk0 iter  
-        if(VerifiekOIter(l,2) == true)
+        if(VerifiekOIter(m,0) == true)
             printf("VerifiekOIter : true\n");
         else  
             printf("VerifiekOIter :false\n");
 
-        //Liste test_NTAZ_SP = NULL ;
-        //test_NTAZ_SP = ajoute(9,test_NTAZ_SP) ;
-        //printf("%d\n",NTAZ_RTSP(test_NTAZ_SP));
+        // Test NTAZ :  
+        printf("Le nbr de termes avant le premier 0 (Iter) est de : %d\n", NTAZ_It (n)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec) est de : %d\n", NTAZ_Rec (m)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec_ss_fct) est de : %d\n", NTAZ_RTSF (l)) ; 
+        printf("Le nbr de termes avant le premier 0 (Rec_ss_proc) est de : %d\n", NTAZ_RTSP (l)) ; 
+
+        // Test Tue pos 
+        TuePosRec(&n) ; 
+        printf("La nouvelle liste (rec) est : \n") ; 
+        affiche_rec(n) ; 
+
+        TuePosIt(&l) ; 
+        printf("La nouvelle liste (Iter) est : \n") ; 
+        affiche_rec(l) ; 
+
+        // Test Tue pos retro 
+        TueRetroPos (&m) ; 
+        printf("La nouvelle liste (retro) est : \n") ; 
+        affiche_rec(m) ; 
 
         VideListe(&m) ; 
         VideListe(&p) ; 
