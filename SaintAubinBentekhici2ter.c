@@ -52,7 +52,10 @@ Liste ajoute(int x, Liste l)
 /*****************************/
 
 void affiche_liste(Liste l) {
-    printf("[");
+    if (l==NULL) {
+        printf("[]\n");
+        return ;
+    }
     while (l != NULL) {
         printf("%d", l->valeur);
         if (l->suite != NULL) {
@@ -78,12 +81,12 @@ void Entree(int x, File * f) {
 
     if(f->dernier == NULL) {
         nouveau->suite= nouveau ; 
-        f->dernier = nouveau ; 
-        f->dernier->suite = nouveau ; 
+        f->dernier = nouveau ;
     }
     else {
         nouveau->suite = f->dernier->suite ; // Coller nouveau au debut de la file (C-à-d vers la ou pointait le dernier)
-        f->derier->suite = nouveau ;    // Faire pointer le dernier sur l'élément que je viens d'ajouter 
+        f->dernier->suite = nouveau ;    // Faire pointer le dernier sur l'élément que je viens d'ajouter
+
     }
 
 }
@@ -99,7 +102,7 @@ void Sortie(int *x, File *f){ // Placer la valeur retirée dans x (comme il est 
         Bloc * premier = f->dernier->suite ; 
         *x = premier->valeur ; 
 
-        if(premier->suite = NULL) { // Le cas d'une liste composée d'un seul élement
+        if(premier->suite == f->dernier) { // Le cas d'une liste composée d'un seul élement
             f->dernier = NULL ; 
         }
         else {
@@ -111,7 +114,7 @@ void Sortie(int *x, File *f){ // Placer la valeur retirée dans x (comme il est 
 
 // Une fonction pour afficher la file (On ne peut plus utiliser afficher liste car le dernier bloc ne pointe plus sur NULL mais sur le premier)
 void affiche_file(File *f) {
-    if (f->dernier == NULL) {
+    if ( f==NULL || f->dernier == NULL ) {
         printf("[]\n") ; 
         return ; 
     }
@@ -128,4 +131,28 @@ void affiche_file(File *f) {
         courant = courant->suite ; 
     }
     printf("]");
+}
+int main() {
+    File *f = NouvelleFile();
+    int var;
+    printf("Debut des tests\n");
+    Entree(10, f);
+    Entree(20, f);
+    Entree(30, f);
+    affiche_file(f);
+    printf("\n");
+    Sortie(&var, f);
+
+    printf("Sortie = %d\n", var);  // 30
+    affiche_file(f);             // [20, 10]
+
+    Sortie(&var, f);
+    printf("Sortie = %d\n", var);  // 20
+    affiche_file(f);             // [10]
+
+    Sortie(&var, f);
+    printf("Sortie = %d\n", var);  // 10
+    affiche_file(f);             // []
+
+    return 0;
 }
