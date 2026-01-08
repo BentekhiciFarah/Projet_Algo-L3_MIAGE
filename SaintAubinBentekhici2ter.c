@@ -83,7 +83,7 @@ void Entree(int x, File * f) {
     }
     else {
         nouveau->suite = f->dernier->suite ; // Coller nouveau au debut de la file (C-à-d vers la ou pointait le dernier)
-        f->derier->suite = nouveau ;    // Faire pointer le dernier sur l'élément que je viens d'ajouter 
+        f->dernier->suite = nouveau ;    // Faire pointer le dernier sur l'élément que je viens d'ajouter 
     }
 
 }
