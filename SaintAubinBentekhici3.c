@@ -139,3 +139,44 @@ image Diagonale(int p) {
     image bg = Wht() ;
     return Cut(bd, hg, hd, hd) ;
 }
+int main() {
+    // Test 1 : image blanche
+    image w = Wht();
+    printf("Image blanche : ");
+    Affiche(w);
+    printf("\n");
+
+    // Test 2 : image noire
+    image b = Blk();
+    printf("Image noire : ");
+    Affiche(b);
+    printf("\n");
+
+    // Test 3 : image composée
+    image img = Cut(Wht(), Blk(), Wht(), Blk());
+    printf("Image mixte : ");
+    Affiche(img);
+    printf("\n");
+
+    // Test 4 : affichage avec profondeur
+    printf("Affichage avec profondeur : ");
+    ProfAffiche(img);
+    printf("\n");
+
+    // Test 5 : quota noir
+    printf("Quota noir : %.2f\n", QuotaNoir(img));
+
+    // Test 6 : copie
+    image copie = Copie(img);
+    printf("Copie image : ");
+    Affiche(copie);
+    printf("\n");
+
+    // Test 7 : diagonale
+    image d = Diagonale(2);
+    printf("Diagonale p=2 : ");
+    Affiche(d);
+    printf("\n");
+
+    return 0;
+}
