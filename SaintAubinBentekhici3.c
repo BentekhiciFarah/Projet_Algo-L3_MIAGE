@@ -94,7 +94,7 @@ bool DessinBlanc(image img) {
     return (img != NULL && img->blanc);
 }
 // etape 6
-void QuotaRec(image img, int taille, int *noir, int *total) {
+void QuotaRec(image img, double taille, double *noir, double *total) {
     if (img == NULL) {
         *noir += taille;
         *total += taille;
@@ -104,14 +104,14 @@ void QuotaRec(image img, int taille, int *noir, int *total) {
     }
     else {
         for (int i = 0; i < 4; i++)
-            QuotaRec(img->Im[i], taille / 4, noir, total);
+            QuotaRec(img->Im[i], taille / 4.0, noir, total);
     }
 }
 
 double QuotaNoir(image img) {
-    int noir = 0, total = 0;
-    QuotaRec(img, 1, &noir, &total);
-    return (double)noir / total; // retour du taux
+    double noir = 0.0, total = 0.0;
+    QuotaRec(img, 1.0, &noir, &total);
+    return noir / total; // retour du taux
 }
 // etape 7
 image Copie(image img) {
@@ -137,7 +137,7 @@ image Diagonale(int p) {
     image hg = Diagonale(p-1);
     image hd = Wht() ;
     image bg = Wht() ;
-    return Cut(bd, hg, hd, hd) ;
+    return Cut(hg, hd, bg, bd) ;
 }
 int main() {
     // Test 1 : image blanche
@@ -173,8 +173,8 @@ int main() {
     printf("\n");
 
     // Test 7 : diagonale
-    image d = Diagonale(2);
-    printf("Diagonale p=2 : ");
+    image d = Diagonale(3);
+    printf("Diagonale p=3 : ");
     Affiche(d);
     printf("\n");
 
