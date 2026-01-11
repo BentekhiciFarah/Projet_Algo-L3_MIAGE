@@ -219,6 +219,8 @@ int CompteImagesGrises(image img) {
     }
     return count ;
 }
+// Fonction labyrinthe (etape 12)
+bool LabyrintheRec(image img) {}
 
 
 
