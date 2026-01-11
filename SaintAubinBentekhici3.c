@@ -139,6 +139,97 @@ image Diagonale(int p) {
     image bg = Wht() ;
     return Cut(hg, hd, bg, bd) ;
 }
+// Fonction indispensable
+void FreeImage(image img) {
+    if (img==NULL) {
+        return ; //pixel noir est considére comme
+    }
+
+    if (img->blanc) {
+        free(img) ;
+        return;
+    }
+    for (int i=0;i<4;i++) {
+        FreeImage(img->Im[i]); //Libération recursives de 4 sous images et libération du noeud courant
+    }
+    free(img) ;
+}
+// etape 9
+void SimplifieProfP(image *img,int p) {
+    if (*img == NULL) {
+        return ;
+    }
+    if (p==0) {
+        if (DessinNoir(*img)) {
+            FreeImage(*img); // Blk() retourne Null mais on libère avant pour éviter une fuite mémoire
+            *img = Blk() ;
+        }
+
+        else if (DessinBlanc(*img)) {
+            FreeImage(*img);
+            *img = Wht() ;
+        }
+        return;
+    }
+    if ((*img)->blanc) return ;
+
+    for (int i = 0; i < 4; i++) {
+        SimplifieProfP(&(*img)->Im[i] , p - 1) ;
+    }
+    //Les anciens arbres doivent etre "free" les sous-arbres remplacés
+
+}
+// etape 10
+bool Incluse(image i1 , image i2) {
+    //i1,la première image est toute noir
+    if (i1==NULL) {
+        return (i2==NULL) ;
+    }
+    // si la premiere n'est pas noir alors blanche
+    if (i1->blanc) {
+        return true ;
+    }
+    // i1 composee
+    if (i2==NULL || i2->blanc) {
+        return false ;
+    }
+    for (int i = 0; i < 4; i++) {
+        if (!Incluse(i1->Im[i], i2->Im[i])) {
+            return false ;
+        }
+    }
+    return true ;
+}
+// etape 11
+
+int CompteImagesGrises(image img) {
+    if (img==NULL) {
+        return 0 ;//pixel noir
+    }
+    int count = 0;
+
+    double q= QuotaNoir(img) ;
+    if (q>= 1.0 /3.0 && q<=2.0 /3.0) {
+        count++ ;
+    }
+    if (!img->blanc) {
+        for (int i = 0; i < 4; i++) {
+            count -=- CompteImagesGrises(img->Im[i]);
+        }
+    }
+    return count ;
+}
+
+
+
+
+
+
+
+
+
+
+
 int main() {
     // Test 1 : image blanche
     image w = Wht();
@@ -164,7 +255,13 @@ int main() {
     printf("\n");
 
     // Test 5 : quota noir
-    printf("Quota noir : %.2f\n", QuotaNoir(img));
+    image image_enonce=  Cut(
+        Blk(),
+        Cut(Wht(), Blk(), Wht(), Wht()),
+        Blk(),
+        Cut(Blk(), Blk(), Blk(), Wht())
+    );
+    printf("Quota noir : %.2f\n", QuotaNoir(image_enonce));
 
     // Test 6 : copie
     image copie = Copie(img);
