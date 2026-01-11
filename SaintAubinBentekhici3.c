@@ -221,71 +221,38 @@ int CompteImagesGrises(image img) {
 }
 // Fonction labyrinthe (etape 12)
 // Remplit la grille pixel par pixel à partir de l'arbre
-void RemplirGrille(image img, int x, int y, int taille, bool **grille) {
-    if (img == NULL) {
-        for (int i = 0;i<taille;i++) {
-            for (int j =0;j<taille;j++) {
-                grille[y+i][x+j] = false;
-            }
-        }
-        return;
-    }
+bool LabyrintheRec(image img, int p, int x, int y) {
+    if (img == NULL)
+        return false; // mur
 
-    if (img->blanc) {
-        for (int i = 0; i < taille; i++)
-            for (int j = 0; j < taille; j++)
-                grille[y+i][x+j] = true; // blanc
-        return;
-    }
-    int moitie = taille / 2; // Taille des 4 sections
-    //Appel recursif sur les 4 sous-blocs
-    RemplirGrille(img->Im[0], x, y, moitie, grille);              // haut-gauche
-    RemplirGrille(img->Im[1], x + moitie, y, moitie, grille);       // haut-droit
-    RemplirGrille(img->Im[2], x, y + moitie, moitie, grille);       // bas-gauche
-    RemplirGrille(img->Im[3], x + moitie, y + moitie, moitie, grille); // bas-droit
-}
+    if (img->blanc)
+        return true;  // bloc entièrement traversable
 
-// existe_chemin pour vérifier si un chemin existe
-bool existe_chemin(bool **grille, int n, int x, int y, bool **visite) {
-    if (x < 0 || y < 0 || x >= n || y >= n)
+    if (p == 0)
         return false;
-    if (!grille[y][x] || visite[y][x])
-        return false;
-    if (x == n-1 && y == n-1)
-        return true;
 
-    visite[y][x] = true;
+    int demi = 1 << (p - 1);
 
-    return existe_chemin(grille, n, x+1, y, visite) || // droite
-           existe_chemin(grille, n, x-1, y, visite) || //gauche
-           existe_chemin(grille, n, x, y+1, visite) || //bas
-           existe_chemin(grille, n, x, y-1, visite); //haut
+    int qx = (x >= demi);
+    int qy = (y >= demi);
+    int q = qy * 2 + qx;
+
+    return LabyrintheRec(
+        img->Im[q],
+        p - 1,
+        x % demi,
+        y % demi
+    );
 }
 
 bool Labyrinthe(image img, int p) {
     int n = 1 << p;
 
-    // Création de la grille
-    bool **grille = malloc(n * sizeof(bool*));
-    bool **visite = malloc(n * sizeof(bool*));
-    for (int i = 0; i < n; i++) {
-        grille[i] = calloc(n, sizeof(bool));
-        visite[i] = calloc(n, sizeof(bool));
-    }
-
-    RemplirGrille(img, 0, 0, n, grille);
-
-    bool res = existe_chemin(grille, n, 0, 0, visite); // lancer recherche de chemins
-
-    for (int i = 0; i < n; i++) {
-        free(grille[i]);
-        free(visite[i]);
-    }
-    free(grille);
-    free(visite);
-    // La fonction Remplir Grille errone partiellement la fonction Labyrinthe
-    return res;
+    // départ et arrivée doivent être accessibles
+    return LabyrintheRec(img, p, 0, 0) &&
+           LabyrintheRec(img, p, n - 1, n - 1);
 }
+
 int main() {
     printf("=== TESTS DE BASE ===\n");
 
@@ -352,14 +319,14 @@ int main() {
     // Test 9 : Simplification profondeur 1
     image simplifie = Copie(gris);
     SimplifieProfP(&simplifie, 1);
-    printf("Image simplifiée (prof=1) : ");
+    printf("Image simplifiee (prof=1) : ");
     Affiche(simplifie);
     printf("\n");
 
     // Test 10 : Simplification profondeur 2
     image simplifie2 = Copie(gris);
     SimplifieProfP(&simplifie2, 2);
-    printf("Image simplifiée (prof=2) : ");
+    printf("Image simplifiee (prof=2) : ");
     Affiche(simplifie2);
     printf("\n");
 
@@ -401,7 +368,7 @@ int main() {
     );
     printf("Labyrinthe 7 (bordure noire) : %s\n", Labyrinthe(lab7,2) ? "vrai" : "faux");
 
-    // Labyrinthe 8 : chemin étroit
+    // Labyrinthe 8 : chemin etroit
     image lab8 = Cut(
         Wht(), Blk(),
         Wht(), Blk()
@@ -414,9 +381,10 @@ int main() {
         Wht(), Blk()
     );
     printf("Labyrinthe 9 (alternance) : %s\n", Labyrinthe(lab9,2) ? "vrai" : "faux");
+    // Fonction de l'enonce
     image lab_complexe =
     Cut(
-        /* 1er quadrant */
+        /* 1 */
         Cut(
             Cut(
                 Wht(), Wht(), Blk(), Wht()
@@ -430,7 +398,7 @@ int main() {
             )
         ),
 
-        /* 2e quadrant */
+        /* 2 */
         Cut(
             Cut(
                 Wht(), Wht(), Blk(), Blk()
@@ -452,7 +420,7 @@ int main() {
             )
         ),
 
-        /* 3e quadrant */
+        /*3*/
         Cut(
             Blk(),
             Cut(
@@ -486,6 +454,7 @@ int main() {
     );
     printf("Labyrinthe complexe (attendu: vrai) : %s\n",
        Labyrinthe(lab_complexe, 4) ? "vrai" : "faux");
+
 
     // Libération mémoire
     FreeImage(w);
