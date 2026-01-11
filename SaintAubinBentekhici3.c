@@ -220,10 +220,17 @@ int CompteImagesGrises(image img) {
     return count ;
 }
 // Fonction labyrinthe (etape 12)
-// Remplit la grille pixel par pixel à partir du quadtree
+// Remplit la grille pixel par pixel à partir de l'arbre
 void RemplirGrille(image img, int x, int y, int taille, bool **grille) {
-    if (img == NULL)
-        return; // noir
+    if (img == NULL) {
+        for (int i = 0;i<taille;i++) {
+            for (int j =0;j<taille;j++) {
+                grille[y+i][x+j] = false;
+            }
+        }
+        return;
+    }
+
     if (img->blanc) {
         for (int i = 0; i < taille; i++)
             for (int j = 0; j < taille; j++)
@@ -276,14 +283,18 @@ bool Labyrinthe(image img, int p) {
     }
     free(grille);
     free(visite);
-
+    // La fonction Remplir Grille errone partiellement la fonction Labyrinthe
     return res;
 }
 int main() {
+    printf("=== TESTS DE BASE ===\n");
+
     // Test 1 : image blanche
     image w = Wht();
     printf("Image blanche : ");
     Affiche(w);
+    printf("\n");
+    ProfAffiche(w);
     printf("\n");
 
     // Test 2 : image noire
@@ -291,56 +302,212 @@ int main() {
     printf("Image noire : ");
     Affiche(b);
     printf("\n");
+    ProfAffiche(b);
+    printf("\n");
 
-    // Test 3 : image composée
+    // Test 3 : image composée simple
     image img = Cut(Wht(), Blk(), Wht(), Blk());
     printf("Image mixte : ");
     Affiche(img);
     printf("\n");
-
-    // Test 4 : affichage avec profondeur
-    printf("Affichage avec profondeur : ");
     ProfAffiche(img);
     printf("\n");
 
-    // Test 5 : quota noir
-    image image_enonce=  Cut(
+    // Test 4 : Copie
+    image copie = Copie(img);
+    printf("Copie de l'image : ");
+    Affiche(copie);
+    printf("\n");
+
+    // Test 5 : Diagonale
+    image diag = Diagonale(3);
+    printf("Diagonale p=3 : ");
+    Affiche(diag);
+    printf("\n");
+
+    // Test 6 : Quota noir
+    image enonce = Cut(
         Blk(),
         Cut(Wht(), Blk(), Wht(), Wht()),
         Blk(),
         Cut(Blk(), Blk(), Blk(), Wht())
     );
-    printf("Quota noir : %.2f\n", QuotaNoir(image_enonce));
+    printf("Quota noir (image enonce) : %.2f\n", QuotaNoir(enonce));
 
-    // Test 6 : copie
-    image copie = Copie(img);
-    printf("Copie image : ");
-    Affiche(copie);
-    printf("\n");
+    // Test 7 : Inclusion
+    image i1 = Cut(Wht(), Wht(), Wht(), Wht());
+    image i2 = Cut(Wht(), Blk(), Wht(), Wht());
+    printf("i2 incluse dans i1 ? %s\n", Incluse(i2, i1) ? "vrai" : "faux");
+    printf("i1 incluse dans i2 ? %s\n", Incluse(i1, i2) ? "vrai" : "faux");
 
-    // Test 7 : diagonale
-    image d = Diagonale(3);
-    printf("Diagonale p=3 : ");
-    Affiche(d);
-    printf("\n");
-
-    // Test 12 Labyrinthe
-    image lab1 = Cut(
-        Wht(), Blk(),
-        Wht(), Wht()
+    // Test 8 : Images grises
+    image gris = Cut(
+        Cut(Wht(), Blk(), Wht(), Wht()),
+        Blk(),
+        Cut(Wht(), Wht(), Blk(), Blk()),
+        Wht()
     );
+    printf("Nombre d'images grises : %d\n", CompteImagesGrises(gris));
 
-    printf("Labyrinthe 1 (attendu: vrai) : %s\n",
-           Labyrinthe(lab1,2) ? "vrai" : "faux");
+    // Test 9 : Simplification profondeur 1
+    image simplifie = Copie(gris);
+    SimplifieProfP(&simplifie, 1);
+    printf("Image simplifiée (prof=1) : ");
+    Affiche(simplifie);
+    printf("\n");
 
-    // Exemple simple de labyrinthe bloqué
-    image lab2 = Cut(
-        Wht(), Blk(),
+    // Test 10 : Simplification profondeur 2
+    image simplifie2 = Copie(gris);
+    SimplifieProfP(&simplifie2, 2);
+    printf("Image simplifiée (prof=2) : ");
+    Affiche(simplifie2);
+    printf("\n");
+
+    printf("\n=== TESTS LABYRINTHE ===\n");
+
+    // Labyrinthe 1 : chemin simple
+    image lab1 = Cut(Wht(), Blk(), Wht(), Wht());
+    printf("Labyrinthe 1 (attendu: vrai) : %s\n", Labyrinthe(lab1,2) ? "vrai" : "faux");
+
+    // Labyrinthe 2 : bloqué
+    image lab2 = Cut(Wht(), Blk(), Blk(), Wht());
+    printf("Labyrinthe 2 (attendu: faux) : %s\n", Labyrinthe(lab2,2) ? "vrai" : "faux");
+
+    // Labyrinthe 3 : diagonale p=2 (chemin en diagonale)
+    image lab3 = Diagonale(2);
+    printf("Labyrinthe 3 (diagonale p=2) (attendu : vrai): %s\n", Labyrinthe(lab3,2) ? "vrai" : "faux");
+
+    // Labyrinthe 4 : complet blanc p=3
+    image lab4 = Wht();
+    printf("Labyrinthe 4 (tout blanc p=3) : %s\n", Labyrinthe(lab4,3) ? "vrai" : "faux");
+
+    // Labyrinthe 5 : complet noir p=3
+    image lab5 = Blk();
+    printf("Labyrinthe 5 (tout noir p=3) : %s\n", Labyrinthe(lab5,3) ? "vrai" : "faux");
+
+    // Labyrinthe 6 : plus complexe
+    image lab6 = Cut(
+        Cut(Wht(), Blk(), Blk(), Wht()),
+        Wht(),
+        Blk(),
+        Cut(Wht(), Wht(), Blk(), Wht())
+    );
+    printf("Labyrinthe 6 (complexe) : %s\n", Labyrinthe(lab6,3) ? "vrai" : "faux");
+
+    // Labyrinthe 7 : bordure noire
+    image lab7 = Cut(
+        Blk(), Blk(),
         Blk(), Wht()
     );
+    printf("Labyrinthe 7 (bordure noire) : %s\n", Labyrinthe(lab7,2) ? "vrai" : "faux");
 
-    printf("Labyrinthe 2 (attendu: faux) : %s\n",
-           Labyrinthe(lab2,2) ? "vrai" : "faux") ;
+    // Labyrinthe 8 : chemin étroit
+    image lab8 = Cut(
+        Wht(), Blk(),
+        Wht(), Blk()
+    );
+    printf("Labyrinthe 8 (chemin étroit) : %s\n", Labyrinthe(lab8,2) ? "vrai" : "faux");
+
+    // Labyrinthe 9 : alternance noir/blanc
+    image lab9 = Cut(
+        Blk(), Wht(),
+        Wht(), Blk()
+    );
+    printf("Labyrinthe 9 (alternance) : %s\n", Labyrinthe(lab9,2) ? "vrai" : "faux");
+    image lab_complexe =
+    Cut(
+        /* 1er quadrant */
+        Cut(
+            Cut(
+                Wht(), Wht(), Blk(), Wht()
+            ),
+            Blk(),
+            Cut(
+                Blk(), Blk(), Wht(), Wht()
+            ),
+            Cut(
+                Wht(), Wht(), Blk(), Blk()
+            )
+        ),
+
+        /* 2e quadrant */
+        Cut(
+            Cut(
+                Wht(), Wht(), Blk(), Blk()
+            ),
+            Cut(
+                Wht(), Blk(), Blk(), Wht()
+            ),
+            Cut(
+                Wht(),
+                Cut(Wht(), Wht(), Blk(), Wht()),
+                Blk(),
+                Cut(Wht(), Wht(), Wht(), Blk())
+            ),
+            Cut(
+                Wht(),
+                Blk(),
+                Cut(Wht(), Wht(), Wht(), Blk()),
+                Cut(Wht(), Blk(), Wht(), Blk())
+            )
+        ),
+
+        /* 3e quadrant */
+        Cut(
+            Blk(),
+            Cut(
+                Cut(Wht(), Wht(), Blk(), Wht()),
+                Wht(),
+                Wht(),
+                Blk()
+            ),
+            Blk(),
+            Cut(
+                Wht(), Wht(), Wht(), Blk()
+            )
+        ),
+
+        /* 4e quadrant */
+        Cut(
+            Cut(
+                Wht(), Blk(), Blk(), Blk()
+            ),
+            Blk(),
+            Cut(
+                Wht(), Wht(), Wht(), Blk()
+            ),
+            Cut(
+                Wht(),
+                Blk(),
+                Wht(),
+                Cut(Wht(), Wht(), Blk(), Wht())
+            )
+        )
+    );
+    printf("Labyrinthe complexe (attendu: vrai) : %s\n",
+       Labyrinthe(lab_complexe, 4) ? "vrai" : "faux");
+
+    // Libération mémoire
+    FreeImage(w);
+    FreeImage(b);
+    FreeImage(img);
+    FreeImage(copie);
+    FreeImage(diag);
+    FreeImage(enonce);
+    FreeImage(i1);
+    FreeImage(i2);
+    FreeImage(gris);
+    FreeImage(simplifie);
+    FreeImage(simplifie2);
+    FreeImage(lab1);
+    FreeImage(lab2);
+    FreeImage(lab3);
+    FreeImage(lab4);
+    FreeImage(lab5);
+    FreeImage(lab6);
+    FreeImage(lab7);
+    FreeImage(lab8);
+    FreeImage(lab9);
 
     return 0;
 }
