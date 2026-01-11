@@ -220,18 +220,65 @@ int CompteImagesGrises(image img) {
     return count ;
 }
 // Fonction labyrinthe (etape 12)
-bool LabyrintheRec(image img) {}
+// Remplit la grille pixel par pixel à partir du quadtree
+void RemplirGrille(image img, int x, int y, int taille, bool **grille) {
+    if (img == NULL)
+        return; // noir
+    if (img->blanc) {
+        for (int i = 0; i < taille; i++)
+            for (int j = 0; j < taille; j++)
+                grille[y+i][x+j] = true; // blanc
+        return;
+    }
+    int moitie = taille / 2; // Taille des 4 sections
+    //Appel recursif sur les 4 sous-blocs
+    RemplirGrille(img->Im[0], x, y, moitie, grille);              // haut-gauche
+    RemplirGrille(img->Im[1], x + moitie, y, moitie, grille);       // haut-droit
+    RemplirGrille(img->Im[2], x, y + moitie, moitie, grille);       // bas-gauche
+    RemplirGrille(img->Im[3], x + moitie, y + moitie, moitie, grille); // bas-droit
+}
 
+// existe_chemin pour vérifier si un chemin existe
+bool existe_chemin(bool **grille, int n, int x, int y, bool **visite) {
+    if (x < 0 || y < 0 || x >= n || y >= n)
+        return false;
+    if (!grille[y][x] || visite[y][x])
+        return false;
+    if (x == n-1 && y == n-1)
+        return true;
 
+    visite[y][x] = true;
 
+    return existe_chemin(grille, n, x+1, y, visite) || // droite
+           existe_chemin(grille, n, x-1, y, visite) || //gauche
+           existe_chemin(grille, n, x, y+1, visite) || //bas
+           existe_chemin(grille, n, x, y-1, visite); //haut
+}
 
+bool Labyrinthe(image img, int p) {
+    int n = 1 << p;
 
+    // Création de la grille
+    bool **grille = malloc(n * sizeof(bool*));
+    bool **visite = malloc(n * sizeof(bool*));
+    for (int i = 0; i < n; i++) {
+        grille[i] = calloc(n, sizeof(bool));
+        visite[i] = calloc(n, sizeof(bool));
+    }
 
+    RemplirGrille(img, 0, 0, n, grille);
 
+    bool res = existe_chemin(grille, n, 0, 0, visite); // lancer recherche de chemins
 
+    for (int i = 0; i < n; i++) {
+        free(grille[i]);
+        free(visite[i]);
+    }
+    free(grille);
+    free(visite);
 
-
-
+    return res;
+}
 int main() {
     // Test 1 : image blanche
     image w = Wht();
@@ -276,6 +323,24 @@ int main() {
     printf("Diagonale p=3 : ");
     Affiche(d);
     printf("\n");
+
+    // Test 12 Labyrinthe
+    image lab1 = Cut(
+        Wht(), Blk(),
+        Wht(), Wht()
+    );
+
+    printf("Labyrinthe 1 (attendu: vrai) : %s\n",
+           Labyrinthe(lab1,2) ? "vrai" : "faux");
+
+    // Exemple simple de labyrinthe bloqué
+    image lab2 = Cut(
+        Wht(), Blk(),
+        Blk(), Wht()
+    );
+
+    printf("Labyrinthe 2 (attendu: faux) : %s\n",
+           Labyrinthe(lab2,2) ? "vrai" : "faux") ;
 
     return 0;
 }
