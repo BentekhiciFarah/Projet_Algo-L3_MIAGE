@@ -253,6 +253,8 @@ bool Labyrinthe(image img, int p) {
            LabyrintheRec(img, p, n - 1, n - 1);
 }
 
+
+
 int main() {
     printf("=== TESTS DE BASE ===\n");
 
